@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/data/mongo 
+		http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+		http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/util  
+		http://www.springframework.org/schema/util/spring-util.xsd">
+    <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+     
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+    <!-- Enables the Spring MVC @Controller programming model -->
+    <mvc:annotation-driven />
+    <context:component-scan base-package="mc_style.functions,com.cointribe" />
+ 	<context:property-placeholder location="WEB-INF/propertyFiles/config.properties,WEB-INF/propertyFiles/db.properties"/>
+ 	
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    <!-- Configure to plugin JSON as request and response in method handler -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+     <context:annotation-config/>
+    <!-- Configure bean to convert JSON to POJO and vice versa -->
+     <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+         <property name="objectMapper" ref="objectMapper" />
+     </bean>
+    <bean id="objectMapper"  class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean" p:indentOutput="true" p:simpleDateFormat="dd-MM-yyyy">
+        <property name="featuresToDisable">
+            <array>
+                <util:constant static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS" />
+            </array>
+        </property>
+    </bean>
+    
+     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+	<!-- LMS_ MongoTemplate for connecting and quering the documents in the database -->
+     
+     <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongo.host}" />
+	</bean>
+	
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongo" />
+		<constructor-arg name="databaseName" value="lms" />
+		<constructor-arg name="userCredentials" ref="userCredentials" />
+	</bean>
+	<bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongo.username}" />
+		<constructor-arg name="password" value="${mongo.password}" />
+	</bean>
+	<!-- Backend MongoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoBackend" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongoBackend.host}" />
+	</bean>
+	<bean id="mongoTemplateBackend" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongoBackend" />
+		<constructor-arg name="databaseName" value="${mongoBackend.databaseName}" />
+		<constructor-arg name="userCredentials" ref="userCredentialsBackend" />
+	</bean>
+	<bean id="userCredentialsBackend" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongoBackend.username}" />
+		<constructor-arg name="password" value="${mongoBackend.password}" />
+	</bean>
+	<!-- YES MongoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoYes" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongoYes.host}" />
+	</bean>
+	<bean id="mongoTemplateYes" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongoYes" />
+		<constructor-arg name="databaseName" value="${mongoYes.databaseName}" />
+		<constructor-arg name="userCredentials" ref="userCredentialsYes" />
+	</bean>
+	<bean id="userCredentialsYes" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongoYes.username}" />
+		<constructor-arg name="password" value="${mongoYes.password}" />
+	</bean>
+	<!-- Mahindra MongoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoMahindra" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongoMahindra.host}" />
+	</bean>
+	<bean id="mongoTemplateMahindra" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongoMahindra" />
+		<constructor-arg name="databaseName" value="${mongoMahindra.databaseName}" />
+		<constructor-arg name="userCredentials" ref="userCredentialsMahindra" />
+	</bean>
+	<bean id="userCredentialsMahindra" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongoMahindra.username}" />
+		<constructor-arg name="password" value="${mongoMahindra.password}" />
+	</bean>
+	
+	<!-- Kanika MongoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoKanika" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongoKanika.host}" />
+	</bean>
+	<bean id="mongoTemplateKanika" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongoKanika" />
+		<constructor-arg name="databaseName" value="${mongoKanika.databaseName}" />
+		<constructor-arg name="userCredentials" ref="userCredentialsKanika" />
+	</bean>
+	<bean id="userCredentialsKanika" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongoKanika.username}" />
+		<constructor-arg name="password" value="${mongoKanika.password}" />
+	</bean>
+	 <!-- Kotak MongoTemplate for connecting and quering the documents in the database -->
+	 <!--
+	<bean id="mongoKotak" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongoKotak.host}" />
+	</bean>
+	<bean id="mongoTemplateKotak" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongo" ref="mongoKotak" />
+		<constructor-arg name="databaseName" value="${mongoKotak.databaseName}" />
+		<constructor-arg name="userCredentials" ref="userCredentialsKotak" />
+	</bean>
+	<bean id="userCredentialsKotak" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongoKotak.username}" />
+		<constructor-arg name="password" value="${mongoKotak.password}" />
+	</bean>
+	-->
+	
+	
+		<bean id="clientResponse" class="com.cointribe.tauth.models.ClientResponse"></bean>
+	<mongo:auditing auditor-aware-ref="userAuditor"/>  
+    <bean id="userAuditor" class="com.cointribe.lms.model.UserAuditor"></bean>
+	<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*"/>
+            <bean class="com.cointribe.rest.interceptor.AuthInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <context:component-scan base-package="com.cointribe.lms.scheduler"/>
+    <task:annotation-driven/>
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+  		<property name="templateLoaderPath" value="/WEB-INF/freemarker"/>
+	</bean>
+	<!-- Static content Serving -->
+	<mvc:resources mapping="/views/**" location="/views/" />
+	<mvc:resources mapping="/lib/**" location="/lib/" />
+	<mvc:resources mapping="/script/**" location="/script/" />
+	<mvc:resources mapping="/style/**" location="/style/" />
+	<mvc:resources mapping="/masterdata/**" location="/masterdata/" />
+	
+	<mvc:resources mapping="/**" location="/" />
+
+	<!-- App specific controller config -->
+	<mvc:view-controller path="/" view-name="/index" />
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.mandrillapp.com" />
+		<property name="port" value="587" />
+		<property name="username" value="Cointribe Technologies Pvt. Ltd." />
+		<property name="password" value="3ONSxXYzFH943BdwDcgeXQ" />
+		<property name="javaMailProperties">
+			<props>
+            	<prop key="mail.smtp.auth">true</prop>
+            	<prop key="mail.smtp.starttls.enable">true</prop>
+        	</props>
+		</property>
+	</bean>
+</beans>
