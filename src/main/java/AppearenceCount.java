@@ -1,13 +1,16 @@
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.PriorityBlockingQueue;
+
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 public class AppearenceCount {
 	static class Node{
@@ -164,12 +167,55 @@ public class AppearenceCount {
 			
 		}
 		System.out.println("------ ");*/
-		while (!prq.isEmpty()) {
-			System.out.print(prq.poll()+" ");
-		}
-		System.out.println(Boolean.getBoolean("true"));
+//		while (!prq.isEmpty()) {
+//			System.out.print(prq.poll()+" ");
+//		}
+		//System.out.println(Boolean.getBoolean("true"));
+		//System.out.println(rowVol(Arrays.asList(1,5,2,3,1,7,2)));
+		int[] a = {3,3,7,3,1,3,4,3,1,4,2,6,4,1,4,2,4,1};//{3,3,4,4,4,2,3,1,3,2,1,4,7,3,1,6,4,1};
+		
+		//System.out.println(getTotalVol(6,3, a));
+		int[] b = {1,5,2,3,1,7,2};
+		System.out.println(trap(b));
 	}
-	
+	public static int accumulatedRainTotal(final int[] tower) {
+	    final int n = tower.length;
+	    final int max_right[] = new int[n];
+	    final int max_left[] = new int[n];
+
+	    max_right[n - 1] = tower[n - 1];
+	    for (int i = n - 2; i >= 0; i--) {
+	        max_right[i] = Math.max(max_right[i + 1], tower[i]);
+	    }
+	    max_left[n - 1] = 0;
+	    int totalRain = Math.max(Math.min(max_left[0], max_right[0]) - tower[0], 0);
+	    for (int i = 1; i < n; i++) {
+	        max_left[i] = Math.max(max_left[i - 1], tower[i]);
+	        totalRain += Math.max(Math.min(max_left[i], max_right[i]) - tower[i], 0);
+	    }
+	    return totalRain;
+	}
+	public static int getMaxRainwaterBetweenTowers(int[] towerHeight) {
+		int maxSeenSoFar = 0;
+		int[] maxSeenRight = new int[towerHeight.length];
+		int maxSeenLeft = 0;
+		int rainwater = 0;
+		for (int i = towerHeight.length - 1; i >= 0; i--) {
+			if (towerHeight[i] > maxSeenSoFar) {
+				maxSeenSoFar = towerHeight[i];
+				maxSeenRight[i] = maxSeenSoFar;
+			} else {
+				maxSeenRight[i] = maxSeenSoFar;
+			}
+		}
+		for (int i = 0; i < towerHeight.length; i++) {
+			rainwater = rainwater + Integer.max(Integer.min(maxSeenLeft, maxSeenRight[i]) - towerHeight[i], 0);
+			if (towerHeight[i] > maxSeenLeft) {
+				maxSeenLeft = towerHeight[i];
+			}
+		}
+		return rainwater;
+	}
 	public static String extractContent(String filename){
 		String email ="";
 		String name = "";
@@ -245,7 +291,23 @@ public class AppearenceCount {
 		}
 		return "name=" + name + ",email=" + email + ", contactNumber=" + contactNumber;
 	}
-
+	@SuppressWarnings("resource")
+	public static String convertWordToText(String src, String desc){
+		try{
+			FileInputStream fs=new FileInputStream(src);
+			XWPFDocument docx=new XWPFDocument(fs); 
+			XWPFWordExtractor extractor=new XWPFWordExtractor(docx);
+			FileWriter fw=new FileWriter(desc);
+			fw.write(extractor.getText());
+			fw.flush();
+			fs.close();
+			fw.close();
+			return extractor.getText();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static int magicalSquare(int[][] input1){
 		//int[][] nArray = {{1,2,3,4},{3,4,1,2},{2,1,4,3},{4,3,2,1}}; //4 x4 //magical sqaure
 		//int[][] input1 = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}}; //4 x4 //magical sqaure
@@ -384,6 +446,161 @@ public class AppearenceCount {
 			}
 			return playerPairs(players, pairs);
 		}
+	}
+	public static int rowVol(List<Integer> list){
+		if(list == null || list.isEmpty()){
+			return 0;
+		}
+		Integer[] arr = new Integer[list.size()];
+		Integer[] height = list.toArray(arr);
+
+		if (height.length <= 2) return 0;
+		int max = Integer.MIN_VALUE;
+		int maxIndex = -1;
+		for (int i = 0; i < height.length; i++) {
+			if (height[i] > max) {
+				max = height[i];
+				maxIndex = i;
+			}
+		}
+		int leftMax = height[0];
+		int water = 0;
+		for (int i = 1; i < maxIndex; i++) {
+			if (height[i] > leftMax) {
+				leftMax = height[i];
+			} else {
+				water += leftMax - height[i];
+			}
+		}
+		int rightMax = height[height.length - 1];
+		for (int i = height.length - 2; i > maxIndex; i--) {
+			if (height[i] > rightMax) {
+				rightMax = height[i];
+			} else {
+				water += rightMax - height[i];
+			}
+		}
+		return water;
+	
+	}
+	public static int getWater(int[] heights){ 
+		int n = heights.length;
+		int[] mol = new int[n];
+		int[] mor = new  int[n]; 
+		int max=0;
+		int i = 0;
+
+		for(i=0; i<n; i++){
+			if( heights[i] >= max){
+				max = heights[i];
+				mol[i] = 0;
+			}
+			else{
+				mol[i] = max;
+			}
+		}
+		max = 0;
+		for(i=n-1; i>=0; i--){
+			if( heights[i] >= max){
+				max = heights[i];
+				mor[i] = 0;
+			}
+			else{
+				mor[i] = max;
+			}
+		}
+		int sumwater = 0;
+		for( i=0; i<n; i++){
+			if(mol[i]!=0 && mor[i]!=0){
+				sumwater+= Math.min(mol[i],mor[i]) - heights[i];
+			}
+		}
+		return  sumwater;
+	}
+	public static int getTotalVol (int input1 , int input2 , int[] input3 ){
+		if(input1 < 1 || input1 > 10 || input2 < 1 || input2 > 10){
+			return 0;
+		}
+		int l = input1;
+		int b = input2;
+		int max  = Math.max(l, b);
+		int v = 0;
+		int[] heights = input3;
+		List<List<Integer>> listOfRows = new ArrayList<>();
+		List<Integer> rows = new ArrayList<>();
+		for (int i = 0; i < heights.length; i++) {
+			if(heights[i] < 1 || heights[i] > 10){
+				return -1;
+			}
+			rows.add(heights[i]);
+			if((i+1)%l == 0){
+				listOfRows.add(rows);
+				rows = new ArrayList<>();
+			}
+		}
+		int rowsNumber = listOfRows.size();
+		if(rowsNumber <= 2){
+			return 0;
+		}
+		int i=0;
+		for (List<Integer> row : listOfRows) {
+			if(!(i== 0 || i == (rowsNumber -1))){
+				v+=rowVol(row);
+			}
+			i++;
+		}
+		return v;
+	}
+	public static int trap(int[] height) {
+		if (height.length <= 2) return 0;
+		int max = Integer.MIN_VALUE;
+		int maxIndex = -1;
+		for (int i = 0; i < height.length; i++) {
+			if (height[i] > max) {
+				max = height[i];
+				maxIndex = i;
+			}
+		}
+
+		int leftMax = height[0];
+		int water = 0;
+		for (int i = 1; i < maxIndex; i++) {
+			if (height[i] > leftMax) {
+				leftMax = height[i];
+			} else {
+				water += leftMax - height[i];
+			}
+		}
+
+		int rightMax = height[height.length - 1];
+		for (int i = height.length - 2; i > maxIndex; i--) {
+			if (height[i] > rightMax) {
+				rightMax = height[i];
+			} else {
+				water += rightMax - height[i];
+			}
+		}
+
+		return water;
+	}
+	public static int[] stockSpan(int[] stock) {
+	    // we will use stack for indexes and not for "stock values"
+	    int[] span = new int[stock.length];
+
+	    for (int i = 0; i < stock.length; i++) {
+	        int index = i - 1;
+	        span[i] = 1;
+	        while (index >= 0 && stock[index] <= stock[i]) {
+	            // previous member is the same or smaller price.
+	            // that member, plus all of its span, are also smaller.
+	            span[i] += span[index];
+	            // we can skip the span and check if the next span is smaller too.
+	            index -= span[index];
+	        }
+	    }
+
+	     System.out.printf("Input %s -> SPans %s%n",  Arrays.toString(stock), Arrays.toString(span));
+	    return span;
 	}
 	
 }

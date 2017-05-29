@@ -3,7 +3,7 @@ public class RandomNumber {
 
 	public static void main(String[] args) {
 		
-		System.out.println(ThreadLocalRandom.current().nextInt(1, 999999999 + 1));
+		System.out.println(ThreadLocalRandom.current().nextInt(1, 99999+ 1));
 
 	}
 

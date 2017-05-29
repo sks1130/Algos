@@ -159,8 +159,8 @@ public class KnightChess {
 		}
 	}
 	public static void main(String[] args) {
-		Node start = new Node(2, 1,null);
-		Node end = new Node(6,5,null);
+		Node start = new Node(1, 1,null);
+		Node end = new Node(8,8,null);
 		System.out.println("Minimum moves for knight="+ traverseCount(start, end));
 	}
 }
