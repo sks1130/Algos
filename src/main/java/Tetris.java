@@ -1,4 +1,11 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import io.swagger.models.auth.In;
 
 /**
  * 
@@ -97,9 +104,46 @@ public class Tetris{
 		    }
 		}
 	public static void main(String[] args) {
-		String s1 = "Dear SREE BISHNU HARDWARE STORE we have received payment of Rs. 195,000 on 18-Apr-2017. KIL";
-		String s2 = "Dear SREE BISHNU HARDWARE STORE we have received payment of Rs. 195,000 on 18-Apr-2017. KIL";
-		System.out.println(s1.equals(s2));
+		List<Integer> list = new ArrayList<>();
+		list.add(21);
+		list.add(111);
+		list.add(311);
+		list.add(2331);
+		list.add(23111);
+		list.add(1);
+//		list.add(23);
+//		list.add(11);
+//		list.add(9);
+//		list.add(7);
+//		list.add(2);
+		//System.out.println(list.parallelStream().sorted().collect(Collectors.toList()).equals(list));
+		List<Integer> listNew  = new ArrayList<>(list);
+		
+		System.out.println(isSorted(list));
+		
+	}
+	public static <T extends Comparable<T>> boolean isSorted(List<T> list) {
+		if(list == null || list.isEmpty()){
+			return false;
+		}
+		if(list.size() == 1) {
+			return true;
+		}
+		T prev =null;
+		boolean asc = true;
+		boolean desc = true;
+		for (T t : list) {
+			//ascending
+			if(prev!=null && prev.compareTo(t) > 0 ){
+				asc = false;
+			} 
+			//descending
+			if(prev!=null && prev.compareTo(t) < 0 ){
+				desc = false;
+			}
+			prev  = t;
+		}
+		return asc || desc;
 	}
 }
 
