@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,12 +36,15 @@ public class Sorting {
 		}
 		return asc || desc;
 	}
-	public static void main(String[] args) {
-		List<String> list = new ArrayList<>();
-		list.add("4");
-		list.add("3");
-		list.add("2");
-		list.add("1");
-		System.out.println(isSorted(Arrays.asList("a","b","c","d")));
+	public static <T> List<T> longestSequence(List<T> list){
+		return list;
+		
 	}
+	public static void main(String[] args) {
+		System.out.println(isSorted(Arrays.asList(1,2,4,5)));//true
+		System.out.println(isSorted(Arrays.asList(5,2,4,5)));//false
+		System.out.println(isSorted(Arrays.asList("abc","bcd","def","fgh")));//true
+		System.out.println(isSorted(Arrays.asList("b","a","c","d")));//false
+	}
+	
 }
