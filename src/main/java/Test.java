@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Test
 {
@@ -7,7 +8,7 @@ public class Test
 		int N = 0, Q =0;
 		int[] A = null;
 		int[] B = null;
-		try {
+		try {/*
 			// Get the object of DataInputStream
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(isr);
@@ -50,8 +51,35 @@ public class Test
 					System.out.println("Invalid arguments");
 					return;
 				}
-				System.out.println(productOfTwoPrimes(A, in));
+				//System.out.println(productOfTwoPrimes(A, in));
 			}
+		*/
+		//////////////////////ends//////////////
+			
+			//System.out.println(checkMultiplierOfPrime(21));
+			//String str = "xyxyyabcddcba";
+			String str = "xaba";
+			char[] arr = str.toCharArray();
+			int len = arr.length;
+			int j = len-1;
+			for (int i = 0; i < len; i++) {
+				if(arr[i] == str.charAt(j)){
+					j--;
+				} else {
+					//System.out.println("not a palindrome");
+					//return;
+				}
+			}
+			
+			Info info = new Info();
+			info.setName("sachin");
+			info.setAge(30);
+			info.setSalary(31d);
+			Info info2 = (Info)info.clone();
+			System.out.println(info2 == info);
+			System.out.println(info2.equals(info));
+			
+			
 		} catch (Exception e) {
 			System.out.println("exception::" + e.getMessage());
 		}
@@ -79,6 +107,9 @@ public class Test
 	    	return true;
 	    }
 	public static boolean checkMultiplierOfPrime(int n){
+		if( n< 6){
+			return false;
+		}
 		int k = (int) Math.sqrt(n);
 		for (int i = k; i >= 2; i--) {
 			if(n % i == 0){

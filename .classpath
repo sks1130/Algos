@@ -24,5 +24,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="/Users/sachin/Downloads/pdfcrowd-2.6-java/pdfcrowd.jar"/>
+	<classpathentry kind="lib" path="/Users/sachin/Downloads/jsoup-1.10.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
