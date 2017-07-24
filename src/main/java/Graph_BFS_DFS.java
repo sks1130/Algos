@@ -20,7 +20,7 @@ public class Graph_BFS_DFS {
 
 	public static void main(String[] args) {
 		numberOfNodes   = 9 ;
-		//adjMatrix  = new int[numberOfNodes][numberOfNodes];
+		adjMatrix  = new int[numberOfNodes][numberOfNodes];
 		visited = new boolean[numberOfNodes];
 		adjMatrix = new int[][]{  { 0, 1, 0, 1, 0, 0, 0, 0, 1 },  
                  { 1, 0, 0, 0, 0, 0, 0, 1, 0 },       
