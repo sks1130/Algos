@@ -7,7 +7,9 @@ import java.util.Queue;
  */
 
 /**
- * @author sachin
+ * @author sachin.srivastava
+ * @tek9g.blogspot.com
+ * @github.com/sks1130/
  *
  */
 public class Graph_BFS_DFS {
