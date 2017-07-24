@@ -66,3 +66,24 @@ public class Graph_BFS_DFS {
 		return -1;
 	}
 }
+
+Output : 
+
+[0, 1, 0, 1, 0, 0, 0, 0, 1]
+[1, 0, 0, 0, 0, 0, 0, 1, 0]
+[0, 0, 0, 1, 0, 1, 0, 1, 0]
+[1, 0, 1, 0, 1, 0, 0, 0, 0]
+[0, 0, 0, 1, 0, 0, 0, 0, 1]
+[0, 0, 1, 0, 0, 0, 1, 0, 0]
+[0, 0, 0, 0, 0, 1, 0, 0, 0]
+[0, 1, 1, 0, 0, 0, 0, 0, 0]
+[1, 0, 0, 0, 1, 0, 0, 0, 0]
+visited node-->0 
+visited node-->1 
+visited node-->3 
+visited node-->8 
+visited node-->7 
+visited node-->2 
+visited node-->4 
+visited node-->5 
+visited node-->6 
