@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * 
@@ -36,11 +37,14 @@ public class Graph_BFS_DFS {
 			System.out.println(Arrays.toString(adjMatrix[i]));
 		}
 		BFS(0);
+		DFS(0);
 	}
 	public static void BFS(int root){
 		if(root >= numberOfNodes){
 			System.out.println("input node is beyond range");
+			return;
 		}
+		System.out.println("---BFS--------");
 		Queue<Integer> queue = new LinkedList<>();
 		queue.add(root);
 		visited[root]  = true;
@@ -54,7 +58,37 @@ public class Graph_BFS_DFS {
 				System.out.println("visited node-->" + child + " ");
 			}
 		}
-
+		clearAllVisitedNodes();
+	}
+	
+	public static void DFS(int root){
+		if(root >= numberOfNodes){
+			System.out.println("input node is beyond range");
+			return;
+		}
+		System.out.println("---DFS--------");
+		Stack<Integer> stack = new Stack<>();
+		stack.push(root);
+		visited[root]  = true;
+		System.out.println("visited node-->" + root + " ");
+		while(!stack.isEmpty()){
+			int head = stack.peek();
+			int child = -1;
+			if(( child = getUnvisitedNode(head))!=-1){
+				stack.push(child);
+				visited[child] = true;
+				System.out.println("visited node-->" + child + " ");
+			} else {
+				stack.pop();
+			}
+		}
+		clearAllVisitedNodes();
+	}
+	
+	public static void clearAllVisitedNodes(){
+		for (int i = 0; i < visited.length; i++) {
+			visited[i] = false;
+		}
 	}
 	
 	public static int getUnvisitedNode(int n ){
