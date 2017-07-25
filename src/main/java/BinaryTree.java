@@ -19,6 +19,7 @@ public class BinaryTree{
 		root.left.right = new Node(6);
 		root.right.left = new Node(5);
 		root.right.right = new Node(4);
+		
 		System.out.println("--------------------");
 		preOrderTraversalWithRecursion(root);
 		System.out.println("--------------------");
@@ -131,7 +132,7 @@ public class BinaryTree{
 		}
 	}
 	
-	public static void printGivenLevelOrder(Node root , int level , boolean ltr){
+	public static void printGivenLevelOrderSpiral(Node root , int level , boolean ltr){
 		if(root == null || (level < 1)){
 			return;
 		}
@@ -139,11 +140,11 @@ public class BinaryTree{
 			System.out.println("node=" + root.value);
 		} else {
 			if(ltr){
-				printGivenLevelOrder(root.left, level-1,ltr);
-				printGivenLevelOrder(root.right, level-1,ltr);
+				printGivenLevelOrderSpiral(root.left, level-1,ltr);
+				printGivenLevelOrderSpiral(root.right, level-1,ltr);
 			} else {
-				printGivenLevelOrder(root.right, level-1,ltr);
-				printGivenLevelOrder(root.left, level-1,ltr);
+				printGivenLevelOrderSpiral(root.right, level-1,ltr);
+				printGivenLevelOrderSpiral(root.left, level-1,ltr);
 			}
 		}
 	}
@@ -165,7 +166,7 @@ public class BinaryTree{
 		int height = height(root);
 		boolean ltr = false;;
 		for (int i = 1; i <= height; i++) {
-			printGivenLevelOrder(root, i,ltr);
+			printGivenLevelOrderSpiral(root, i,ltr);
 			ltr=!ltr;
 		}
 		
