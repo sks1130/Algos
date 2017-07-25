@@ -11,21 +11,26 @@ public class BinaryTree{
 
 	// driver program to test above functions
 	public static void main(String args[]) {
+
 		root = new Node(1);
 		root.left = new Node(2);
 		root.right = new Node(3);
-		root.left.left = new Node(4);
-		root.left.right = new Node(5);
+		root.left.left = new Node(7);
+		root.left.right = new Node(6);
+		root.right.left = new Node(5);
+		root.right.right = new Node(4);
 		System.out.println("--------------------");
 		preOrderTraversalWithRecursion(root);
 		System.out.println("--------------------");
 		postOrderTraversalWithRecursion(root);
-		System.out.println("--------------------");
+		System.out.println("--------------------\n");
 		inOrderTraversalWithRecursion(root);
 		System.out.println("--------------------");
-		System.out.println("-----height of tree=" + height(root));
-		System.out.println("--------------------");
+		System.out.println("\n-----height of tree=" + height(root));
+		System.out.println("\n-------Level Order traversal-----------\n");
 		printLevelOrder(root);
+		System.out.println("\nSpiral order traversal of Binary Tree is\n ");
+		levelOrderSpiralTraversal(root);
 	}
 
 	public static void preOrderTraversal(Node root) {
@@ -126,6 +131,23 @@ public class BinaryTree{
 		}
 	}
 	
+	public static void printGivenLevelOrder(Node root , int level , boolean ltr){
+		if(root == null || (level < 1)){
+			return;
+		}
+		if(level == 1 ){
+			System.out.println("node=" + root.value);
+		} else {
+			if(ltr){
+				printGivenLevelOrder(root.left, level-1,ltr);
+				printGivenLevelOrder(root.right, level-1,ltr);
+			} else {
+				printGivenLevelOrder(root.right, level-1,ltr);
+				printGivenLevelOrder(root.left, level-1,ltr);
+			}
+		}
+	}
+	
 	public static void printLevelOrder(Node root){
 		if(root == null){
 			return;
@@ -134,6 +156,19 @@ public class BinaryTree{
 		for (int i = 1; i <= height; i++) {
 			printGivenLevelOrder(root, i);
 		}
+	}
+	
+	public static void levelOrderSpiralTraversal(Node root){
+		if( root == null){
+			return;
+		}
+		int height = height(root);
+		boolean ltr = false;;
+		for (int i = 1; i <= height; i++) {
+			printGivenLevelOrder(root, i,ltr);
+			ltr=!ltr;
+		}
+		
 	}
 
 	static class Node {
