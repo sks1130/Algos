@@ -1,10 +1,5 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.Stack;
 
-/**
- * 
- */
 
 /**
  * @author sachin
@@ -21,8 +16,16 @@ public class BinaryTree{
 		root.right = new Node(3);
 		root.left.left = new Node(4);
 		root.left.right = new Node(5);
-		preOrderTraversal(root);
-
+		System.out.println("--------------------");
+		preOrderTraversalWithRecursion(root);
+		System.out.println("--------------------");
+		postOrderTraversalWithRecursion(root);
+		System.out.println("--------------------");
+		inOrderTraversalWithRecursion(root);
+		System.out.println("--------------------");
+		System.out.println("-----height of tree=" + height(root));
+		System.out.println("--------------------");
+		printLevelOrder(root);
 	}
 
 	public static void preOrderTraversal(Node root) {
@@ -54,7 +57,83 @@ public class BinaryTree{
 		System.out.println("PostOrder traversal in Binary tree with the root node=" + root.value);
 		Stack<Node> stack = new Stack<>();
 		stack.push(root);
-		//todo need to write the post traversal
+	}
+	
+	public static void postOrderTraversalWithRecursion(Node root) { 
+		if(root == null){
+			return;
+		}
+		if(root.left !=null){
+			postOrderTraversalWithRecursion(root.left);
+		}
+		if(root.right !=null){
+			postOrderTraversalWithRecursion(root.right);
+		}
+		System.out.println(" postOrderTraversalWithRecursion node-->" + root.value);
+		
+	}
+	
+	public static void preOrderTraversalWithRecursion(Node root) { 
+		if(root == null){
+			return;
+		}
+		System.out.println(" preOrderTraversalWithRecursion node-->" + root.value);
+		if(root.left !=null){
+			preOrderTraversalWithRecursion(root.left);
+		}
+		if(root.right !=null){
+			preOrderTraversalWithRecursion(root.right);
+		}
+		
+	}
+	
+	public static void inOrderTraversalWithRecursion(Node root) { 
+		if(root == null){
+			return;
+		}
+		if(root.left !=null){
+			inOrderTraversalWithRecursion(root.left);
+		}
+		System.out.println(" inOrderTraversalWithRecursion node-->" + root.value);
+		if(root.right !=null){
+			inOrderTraversalWithRecursion(root.right);
+		}
+		
+	}
+	
+	public static int height(Node root){
+		if(root == null){
+			return 0;
+		} else {
+			int heightLeft = height(root.left);
+			int rightLeft  = height(root.right);
+			if(heightLeft > rightLeft){
+				return heightLeft +1 ;
+			} else {
+				return rightLeft +1 ;
+			}
+		}
+	}
+	public static void printGivenLevelOrder(Node root , int level){
+		if(root == null || (level < 1)){
+			return;
+		}
+		if(level == 1 ){
+			System.out.println("node=" + root.value);
+		} else {
+			printGivenLevelOrder(root.left, level-1);
+			printGivenLevelOrder(root.right, level-1);
+		}
+	}
+	
+	public static void printLevelOrder(Node root){
+		if(root == null){
+			return;
+		}
+		int height = height(root);
+		for (int i = 1; i <= height; i++) {
+			printGivenLevelOrder(root, i);
+		}
 	}
 
 	static class Node {
