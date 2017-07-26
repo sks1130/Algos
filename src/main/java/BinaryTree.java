@@ -5,7 +5,7 @@ import java.util.Stack;
  * @author sachin
  *
  */
-public class BinaryTree{
+public class BinaryTree {
 
 	static Node root;
 
@@ -19,7 +19,7 @@ public class BinaryTree{
 		root.left.right = new Node(6);
 		root.right.left = new Node(5);
 		root.right.right = new Node(4);
-		
+
 		System.out.println("--------------------");
 		preOrderTraversalWithRecursion(root);
 		System.out.println("--------------------");
@@ -32,6 +32,14 @@ public class BinaryTree{
 		printLevelOrder(root);
 		System.out.println("\nSpiral order traversal of Binary Tree is\n ");
 		levelOrderSpiralTraversal(root);
+		System.out.println("-----all the leaf nodes------");
+		printLeafNodes(root);
+		System.out.println("-----all the paths frm root to leaf nodes------");
+		printAllPathsRootToLeaf(root, null);
+		System.out.println("-----max value in the tree------");
+		System.out.println(maxNodeInTree(root));
+		System.out.println("---findLCA--------");
+		System.out.println(findLCA(root, 5, 4).value);
 	}
 
 	public static void preOrderTraversal(Node root) {
@@ -54,7 +62,7 @@ public class BinaryTree{
 			}
 		}
 	}
-	
+
 	public static void postOrderTraversal(Node root) {
 		if (root == null) {
 			System.out.println("root node is null");
@@ -64,93 +72,94 @@ public class BinaryTree{
 		Stack<Node> stack = new Stack<>();
 		stack.push(root);
 	}
-	
-	public static void postOrderTraversalWithRecursion(Node root) { 
-		if(root == null){
+
+	public static void postOrderTraversalWithRecursion(Node root) {
+		if (root == null) {
 			return;
 		}
-		if(root.left !=null){
+		if (root.left != null) {
 			postOrderTraversalWithRecursion(root.left);
 		}
-		if(root.right !=null){
+		if (root.right != null) {
 			postOrderTraversalWithRecursion(root.right);
 		}
 		System.out.println(" postOrderTraversalWithRecursion node-->" + root.value);
-		
+
 	}
-	
-	public static void preOrderTraversalWithRecursion(Node root) { 
-		if(root == null){
+
+	public static void preOrderTraversalWithRecursion(Node root) {
+		if (root == null) {
 			return;
 		}
 		System.out.println(" preOrderTraversalWithRecursion node-->" + root.value);
-		if(root.left !=null){
+		if (root.left != null) {
 			preOrderTraversalWithRecursion(root.left);
 		}
-		if(root.right !=null){
+		if (root.right != null) {
 			preOrderTraversalWithRecursion(root.right);
 		}
-		
+
 	}
-	
-	public static void inOrderTraversalWithRecursion(Node root) { 
-		if(root == null){
+
+	public static void inOrderTraversalWithRecursion(Node root) {
+		if (root == null) {
 			return;
 		}
-		if(root.left !=null){
+		if (root.left != null) {
 			inOrderTraversalWithRecursion(root.left);
 		}
 		System.out.println(" inOrderTraversalWithRecursion node-->" + root.value);
-		if(root.right !=null){
+		if (root.right != null) {
 			inOrderTraversalWithRecursion(root.right);
 		}
-		
+
 	}
-	
-	public static int height(Node root){
-		if(root == null){
+
+	public static int height(Node root) {
+		if (root == null) {
 			return 0;
 		} else {
 			int heightLeft = height(root.left);
-			int rightLeft  = height(root.right);
-			if(heightLeft > rightLeft){
-				return heightLeft +1 ;
+			int rightLeft = height(root.right);
+			if (heightLeft > rightLeft) {
+				return heightLeft + 1;
 			} else {
-				return rightLeft +1 ;
+				return rightLeft + 1;
 			}
 		}
 	}
-	public static void printGivenLevelOrder(Node root , int level){
-		if(root == null || (level < 1)){
+
+	public static void printGivenLevelOrder(Node root, int level) {
+		if (root == null || (level < 1)) {
 			return;
 		}
-		if(level == 1 ){
+		if (level == 1) {
 			System.out.println("node=" + root.value);
 		} else {
-			printGivenLevelOrder(root.left, level-1);
-			printGivenLevelOrder(root.right, level-1);
+			printGivenLevelOrder(root.left, level - 1);
+			printGivenLevelOrder(root.right, level - 1);
 		}
 	}
-	
-	public static void printGivenLevelOrderSpiral(Node root , int level , boolean ltr){
-		if(root == null || (level < 1)){
+
+	public static void printGivenLevelOrderSpiral(Node root, int level, boolean ltr) {
+		if (root == null || (level < 1)) {
 			return;
 		}
-		if(level == 1 ){
+		if (level == 1) {
 			System.out.println("node=" + root.value);
 		} else {
-			if(ltr){
-				printGivenLevelOrderSpiral(root.left, level-1,ltr);
-				printGivenLevelOrderSpiral(root.right, level-1,ltr);
+			if (ltr) {
+				printGivenLevelOrderSpiral(root.left, level - 1, ltr);
+				printGivenLevelOrderSpiral(root.right, level - 1, ltr);
 			} else {
-				printGivenLevelOrderSpiral(root.right, level-1,ltr);
-				printGivenLevelOrderSpiral(root.left, level-1,ltr);
+				printGivenLevelOrderSpiral(root.right, level - 1, ltr);
+				printGivenLevelOrderSpiral(root.left, level - 1, ltr);
 			}
 		}
 	}
-	
-	public static void printLevelOrder(Node root){
-		if(root == null){
+
+	public static void printLevelOrder(Node root) {
+		if (root == null) {
 			return;
 		}
 		int height = height(root);
@@ -158,27 +167,89 @@ public class BinaryTree{
 			printGivenLevelOrder(root, i);
 		}
 	}
-	
-	public static void levelOrderSpiralTraversal(Node root){
-		if( root == null){
+
+	public static void levelOrderSpiralTraversal(Node root) {
+		if (root == null) {
 			return;
 		}
 		int height = height(root);
-		boolean ltr = false;;
+		boolean ltr = false;
+		;
 		for (int i = 1; i <= height; i++) {
-			printGivenLevelOrderSpiral(root, i,ltr);
-			ltr=!ltr;
+			printGivenLevelOrderSpiral(root, i, ltr);
+			ltr = !ltr;
+		}
+
+	}
+
+	public static void printLeafNodes(Node root) {
+		if (root == null) {
+			return;
+		}
+		if (root.left == null && root.right == null) {
+			System.out.println("leaf node-->" + root.value);
+		}
+		printLeafNodes(root.left);
+		printLeafNodes(root.right);
+	}
+
+	public static void printAllPathsRootToLeaf(Node root, Node parent) {
+		if (root == null) {
+			return;
+		}
+		if (root.left == null && root.right == null) {
+			while (root != null) {
+				System.out.print(root.value + " ");
+				root = root.parent;
+			}
+			System.out.println();
+			return;
+		}
+		root.left.parent = root;
+		root.right.parent = root;
+		parent = root;
+		printAllPathsRootToLeaf(root.left, parent);
+		printAllPathsRootToLeaf(root.right, parent);
+	}
+	
+	public static int maxNodeInTree(Node root){
+		if(root == null){
+			return Integer.MIN_VALUE;
+		}
+		int max = root.value;
+		if(root.left!=null){
+			max = Math.max(max,maxNodeInTree(root.left));
+		}
+		if(root.right!=null){
+			max =  Math.max(max,maxNodeInTree(root.right));
+		}
+		return max;
+	}
+	
+	public static Node findLCA(Node root, int start , int end){
+		if(root == null){
+			return null;
+		}
+		if(root.value == start || root.value == end){
+			return root;
+		}
+		Node left = findLCA(root.left, start, end);
+		Node right = findLCA(root.right, start, end);
+		if(left!=null && right!=null){
+			return root;
 		}
 		
+		return (left!=null)? left : right;
 	}
 
 	static class Node {
 		int value;
 		Node left;
 		Node right;
+		Node parent;
 		Node(int val) {
 			this.value = val;
-			right = left = null;
+			right = left = parent = null;
 		}
 	}
 
