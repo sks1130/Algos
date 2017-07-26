@@ -40,6 +40,8 @@ public class BinaryTree {
 		System.out.println(maxNodeInTree(root));
 		System.out.println("---findLCA--------");
 		System.out.println(findLCA(root, 5, 4).value);
+		System.out.println("\n---printBoundaryNodes--------\n");
+		printBoundaryNodes(root);
 	}
 
 	public static void preOrderTraversal(Node root) {
@@ -240,6 +242,41 @@ public class BinaryTree {
 		}
 		
 		return (left!=null)? left : right;
+	}
+	
+	public static void printBoundaryNodes(Node root){
+		if(root == null){
+			return;
+		}
+		System.out.println("root node-->" + root.value);
+		printLeftBoundaryNodes(root.left);
+		printLeafNodes(root);
+		printRightBoundaryNodes(root.right);
+	}
+	
+	public static void printLeftBoundaryNodes(Node root){
+		if(root!=null){
+			if(root.left!=null){
+				System.out.println("left boundary node-->" + root.value);
+				printLeftBoundaryNodes(root.left);
+			}
+			else if(root.right!=null){
+				System.out.println("left boundary node-->" + root.value);
+				printLeftBoundaryNodes(root.right);
+			}
+		}
+	}
+	public static void printRightBoundaryNodes(Node root){
+		if(root!=null){
+			if(root.right!=null){
+				System.out.println("right boundary node-->" + root.value);
+				printRightBoundaryNodes(root.right);
+			}
+			else if(root.left!=null){
+				System.out.println("right boundary node-->" + root.value);
+				printRightBoundaryNodes(root.left);
+			}
+		}
 	}
 
 	static class Node {
