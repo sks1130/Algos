@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Scanner;
 
 
 /**
@@ -19,12 +23,24 @@ public class Tries {
 		}
 	}
 	public static void main(String ... args){
-		Tries tr = new Tries();
-		tr.add("dog");
-		tr.add("doggy");
-		System.out.println(tr.search("dogg"));
-		System.out.println(tr.search("doggy"));
+		String line = "";
+		Scanner input = null;
+		try {
+			input = new Scanner(System.in);
+			line = input.nextLine();
+			if(line == null || line.isEmpty()){
+				System.out.println("invalid inout");
+			}
+			Double principal = Double.parseDouble(line);
+			Integer interest = Integer.parseInt(input.nextLine()); 
+			Integer year = Integer.parseInt(input.nextLine()); 
+			Double simpleInterest = (principal*interest*year/100);
+			System.out.println( Math.round(simpleInterest));
+			input.close();
+		} catch (Exception e) {
+		}
 	}
+
 	private boolean search(String word) {
 		Node crawl = root;
 		int n = word.length();
