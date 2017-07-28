@@ -1,4 +1,7 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
+import java.util.Map.Entry;
 
 
 /**
@@ -15,10 +18,10 @@ public class BinaryTree {
 		root = new Node(1);
 		root.left = new Node(2);
 		root.right = new Node(3);
-		root.left.left = new Node(7);
-		root.left.right = new Node(6);
-		root.right.left = new Node(5);
-		root.right.right = new Node(4);
+		root.left.left = new Node(4);
+		root.left.right = new Node(5);
+		root.right.left = new Node(6);
+		root.right.right = new Node(7);
 
 		System.out.println("--------------------");
 		preOrderTraversalWithRecursion(root);
@@ -42,6 +45,35 @@ public class BinaryTree {
 		System.out.println(findLCA(root, 5, 4).value);
 		System.out.println("\n---printBoundaryNodes--------\n");
 		printBoundaryNodes(root);
+		System.out.println("\n-------verticalSums-----\n");
+		verticalSums(root);
+	}
+
+	public static void verticalSums(Node root) {
+		if (root == null) {
+			System.out.println("vertical sum=" + 0);
+		}
+		// for the left node level l-- and //for the right node l++
+		Map<Integer, Integer> verticalSumMap = new HashMap<>();
+		verticalSums(root, root.level, verticalSumMap);
+		for (Entry<Integer, Integer> entry : verticalSumMap.entrySet()) {
+			System.out.println("level=" + entry.getKey() + " and sum=" + entry.getValue());
+		}
+
+	}
+
+	public static void verticalSums(Node root, int level, Map<Integer, Integer> levelMap) {
+		if (root == null) {
+			return;
+		}
+		// for the left node level l-- and //for the right node l++
+		verticalSums(root.left, level - 1, levelMap);
+		if (levelMap.get(level) == null) {
+			levelMap.put(level, root.value);
+		} else {
+			levelMap.put(level, levelMap.get(level) + root.value);
+		}
+		verticalSums(root.right, level + 1, levelMap);
 	}
 
 	public static void preOrderTraversal(Node root) {
@@ -213,39 +245,39 @@ public class BinaryTree {
 		printAllPathsRootToLeaf(root.left, parent);
 		printAllPathsRootToLeaf(root.right, parent);
 	}
-	
-	public static int maxNodeInTree(Node root){
-		if(root == null){
+
+	public static int maxNodeInTree(Node root) {
+		if (root == null) {
 			return Integer.MIN_VALUE;
 		}
 		int max = root.value;
-		if(root.left!=null){
-			max = Math.max(max,maxNodeInTree(root.left));
+		if (root.left != null) {
+			max = Math.max(max, maxNodeInTree(root.left));
 		}
-		if(root.right!=null){
-			max =  Math.max(max,maxNodeInTree(root.right));
+		if (root.right != null) {
+			max = Math.max(max, maxNodeInTree(root.right));
 		}
 		return max;
 	}
-	
-	public static Node findLCA(Node root, int start , int end){
-		if(root == null){
+
+	public static Node findLCA(Node root, int start, int end) {
+		if (root == null) {
 			return null;
 		}
-		if(root.value == start || root.value == end){
+		if (root.value == start || root.value == end) {
 			return root;
 		}
 		Node left = findLCA(root.left, start, end);
 		Node right = findLCA(root.right, start, end);
-		if(left!=null && right!=null){
+		if (left != null && right != null) {
 			return root;
 		}
-		
-		return (left!=null)? left : right;
+
+		return (left != null) ? left : right;
 	}
-	
-	public static void printBoundaryNodes(Node root){
-		if(root == null){
+
+	public static void printBoundaryNodes(Node root) {
+		if (root == null) {
 			return;
 		}
 		System.out.println("root node-->" + root.value);
@@ -253,26 +285,25 @@ public class BinaryTree {
 		printLeafNodes(root);
 		printRightBoundaryNodes(root.right);
 	}
-	
-	public static void printLeftBoundaryNodes(Node root){
-		if(root!=null){
-			if(root.left!=null){
+
+	public static void printLeftBoundaryNodes(Node root) {
+		if (root != null) {
+			if (root.left != null) {
 				System.out.println("left boundary node-->" + root.value);
 				printLeftBoundaryNodes(root.left);
-			}
-			else if(root.right!=null){
+			} else if (root.right != null) {
 				System.out.println("left boundary node-->" + root.value);
 				printLeftBoundaryNodes(root.right);
 			}
 		}
 	}
-	public static void printRightBoundaryNodes(Node root){
-		if(root!=null){
-			if(root.right!=null){
+
+	public static void printRightBoundaryNodes(Node root) {
+		if (root != null) {
+			if (root.right != null) {
 				System.out.println("right boundary node-->" + root.value);
 				printRightBoundaryNodes(root.right);
-			}
-			else if(root.left!=null){
+			} else if (root.left != null) {
 				System.out.println("right boundary node-->" + root.value);
 				printRightBoundaryNodes(root.left);
 			}
@@ -281,13 +312,14 @@ public class BinaryTree {
 
 	static class Node {
 		int value;
+		int level;
 		Node left;
 		Node right;
 		Node parent;
+
 		Node(int val) {
 			this.value = val;
 			right = left = parent = null;
 		}
 	}
-
 }
