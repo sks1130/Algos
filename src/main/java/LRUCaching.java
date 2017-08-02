@@ -52,7 +52,10 @@ public class LRUCaching<T> {
 		lru.set("d", 4);
 		lru.set("e", 5);
 		printMap(lru.map);
-		System.out.println("\nget key=a and value=" + lru.get("a"));
+		System.out.println("\nget key=a and value=" + lru.get("a"));// it will move key a to front and b would be at the rear.
+		printMap(lru.map);
+		//setting the element beyond the capacity
+		lru.set("f", 6);//it will remove the least used key b
 		printMap(lru.map);
 	}
 }
