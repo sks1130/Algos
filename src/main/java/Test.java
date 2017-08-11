@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import junit.framework.Assert;
+
 public class Test
 {
 	public static void main(String args[] ) throws Exception {
@@ -134,7 +136,7 @@ public class Test
 		}
 	}
 	public static void swap(int[] arr , int i , int j){
-		int temp =arr[i];
+		int temp =arr[i	];
 		arr[i] = arr[j];
 		arr[j] = temp;
 	}
