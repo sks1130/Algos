@@ -1,9 +1,15 @@
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,10 +76,74 @@ public class DFS_Examples {
 
 		return actualDay;
 	}
+	public static void printRows(){
+		Scanner scan = new Scanner(System.in); 
+		int n  = scan.nextInt();
+		ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			int d = scan.nextInt();
+			ArrayList<Integer> row = new ArrayList<>();
+			for (int j = 0; j < d; j++) {
+				row.add( scan.nextInt());
+			}
+			rows.add(row);
+		}
+		int q = scan.nextInt();
+		for (int i = 0; i < q; i++) {
+			for (int j = 0; j < 2; j++) {
+				int x = scan.nextInt();
+				int y = scan.nextInt();
+				try{
+					System.out.println(rows.get(x-1).get(y-1));
+				}catch(Exception e){
+					System.out.println("ERROR!");
+				}
+			}
 
-	public static void main(String[] args) {
+		}
+	}
+	
+	public static boolean canWin(int leap , int[] game){
+		return solve(leap, game, 0);
+	}
+	
+	public static void  listOperations(){
+		Scanner scan = new Scanner(System.in);
+		int size = scan.nextInt();//size of the input list
+		LinkedList<Integer> list = new LinkedList<>();
+		for (int i = 0; i < size; i++) {
+			list.add(scan.nextInt()); ///addig elements in the ll
+		}
+		int q = scan.nextInt();//number of queries
+		for (int i = 0; i < q; i++) {
+			String str = scan.next();
+			if("Insert".equalsIgnoreCase(str)){
+				int index = scan.nextInt(); //index to be updated
+				int value = scan.nextInt();
+				list.add(index, value);
+			} else if("Delete".equalsIgnoreCase(str)){
+				list.remove(scan.nextInt()); //removing the index element
+			}
+		}
+		for (Integer integer : list) {
+			System.out.print(integer + " ");
+		}
+		scan.close();
+	}
+	
+	public static boolean solve(int leap , int[] game , int index){
+		if(game == null || game.length == 0 || leap < 0 || index < 0 || game[index] == 1){
+			return false;
+		}
+		if(index == game.length -1 || (index + leap > game.length -1)){
+			return true;
+		}
+		game[index]  = 1;//for visited node marking as 1
 		
-		System.out.println(totalNegativeArr(new int[]{1, -2, 4, -5 ,1}));
+		return solve(leap, game, index-1) || solve(leap, game, index+1) || solve(leap, game, index+leap);
+	}
+	public static void main(String[] args) {
+		listOperations();
 	}
 	
 	public static int maxSumHourGlass(int[][] arr) {
