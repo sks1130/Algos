@@ -1,31 +1,30 @@
 import java.text.NumberFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Currency;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
- */
-
-/**
- * @author sachin
+ * @author sachin.srivastava
+ * @github @sks1130
  *
  */
-public class DFS_Examples {
+public class HackerRank {
 
 	private  int ROW = 5 , COL = 5;
-	public DFS_Examples(int row , int col) {
+	public HackerRank(int row , int col) {
 		this.ROW = row;
 		this.COL = col;
 	}
@@ -106,7 +105,29 @@ public class DFS_Examples {
 	public static boolean canWin(int leap , int[] game){
 		return solve(leap, game, 0);
 	}
-	
+
+	public static void phoneBook() {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		in.nextLine();
+		Map<String, Integer> nameNumberMap = new HashMap<>();
+		for (int i = 0; i < n; i++) {
+			String name = in.nextLine();
+			Integer phone = in.nextInt();
+			if(phone.toString().trim().length() == 8){
+				nameNumberMap.put(name.toLowerCase(), phone);
+			}
+			in.nextLine();
+		}
+		while (in.hasNext()) {
+			String s = in.nextLine();
+			Integer phone = nameNumberMap.get(s.toLowerCase());
+			if(phone == null){
+				System.out.println("Not found");
+			}
+			System.out.println(s+"=" + phone);
+		}
+	}
 	public static void  listOperations(){
 		Scanner scan = new Scanner(System.in);
 		int size = scan.nextInt();//size of the input list
@@ -142,8 +163,167 @@ public class DFS_Examples {
 		
 		return solve(leap, game, index-1) || solve(leap, game, index+1) || solve(leap, game, index+leap);
 	}
+	
+	public static void studentComparator() {
+		Scanner in = new Scanner(System.in);
+		int testCases = Integer.parseInt(in.nextLine());
+		List<Student> studentList = new ArrayList<Student>();
+		while (testCases > 0) {
+			int id = in.nextInt();
+			String fname = in.next();
+			double cgpa = in.nextDouble();
+			Student st = new Student(id, fname, cgpa);
+			studentList.add(st);
+			testCases--;
+		}
+		Collections.sort(studentList, new Comparator<Student>() {
+			@Override
+			public int compare(Student o1, Student o2) {
+				int diff = Double.valueOf(o2.cgpa).compareTo(Double.valueOf(o1.cgpa));
+				if (diff == 0) {
+					diff = o1.fname.compareTo(o2.fname);
+					if (diff == 0) {
+						diff = o1.id - o2.id;
+					}
+				}
+				return diff;
+			}
+		});
+		for (Student st : studentList) {
+			System.out.println(st.getFname());
+		}
+	}
 	public static void main(String[] args) {
-		listOperations();
+		
+	}
+	
+	public static void maxUniqueNumbers() {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		int m = in.nextInt();
+		int max = 0;
+		int[] inputNumbersArr = new int[n];
+		Deque deque = new ArrayDeque<>(m);
+		for (int i = 0; i < n; i++) {
+			int num = in.nextInt();
+			inputNumbersArr[i] = num;
+		}
+		System.out.println(max);
+
+	}
+	
+	public static long pow(int x, int y) {
+		if (y == 0) {
+			return 1;
+		}
+		if (y % 2 == 0) {
+			return pow(x * x, y / 2);
+		}
+		return x * pow(x, y - 1);
+	}
+	
+	public static boolean possible(int a , int b , int c){
+		int fix = c;
+		int twice = 2*a;
+		int diff  = b-a;
+		if(fix == twice && twice == diff){
+			return true;
+		}
+		return possible(a, b, c) ||  possible(b, a, c) ||  possible(c, a, b);
+
+	}
+	public static void printArray(Object... array){
+		for (Object object : array) {
+			 System.out.println(  object.getClass().getSimpleName() + " and "+  object);
+		}
+       
+    }
+	static class Player{
+	    String name;
+	    int score;
+	    
+	    Player(String name, int score){
+	        this.name = name;
+	        this.score = score;
+	    }
+	}
+	static class Student implements Comparator<Student>{
+		private int id;
+		private String fname;
+		private double cgpa;
+		public Student(int id, String fname, double cgpa) {
+			super();
+			this.id = id;
+			this.fname = fname;
+			this.cgpa = cgpa;
+		}
+		public int getId() {
+			return id;
+		}
+		public String getFname() {
+			return fname;
+		}
+		public double getCgpa() {
+			return cgpa;
+		}
+		@Override
+		public int compare(Student o1, Student o2) {
+			int  diff = Double.valueOf(o2.cgpa).compareTo(Double.valueOf(o1.cgpa));
+			if(diff == 0){
+				diff  = o1.fname.compareTo(o2.fname);
+				if(diff == 0){
+					diff = o1.id - o2.id;
+				}
+			}
+			return diff;
+		}
+	}
+	
+	static class Checker implements Comparator<Player> {
+		@Override
+		public int compare(Player o1, Player o2) {
+			int diff = o2.score - o1.score;
+			if(diff == 0){
+				return o1.name.compareTo(o2.name);
+			}
+			return diff;
+		}
+	}
+	
+	public static boolean stackPattern(String input) {
+		//{}()
+//		({()})
+//		{}(
+//		[]
+//		//({}[])
+//		(({()})))
+//		({(){}()})()({(){}()})(){()}
+//		{}()))(()()({}}{}
+//		}}}}
+//		))))
+//		{{{
+//		(((
+//		[]{}(){()}((())){{{}}}{()()}{{}{}}
+//		[[]][][]
+//		}{
+		if (input == null || input.isEmpty() || input.length() % 2 != 0) {
+			return false;
+		}
+		Map<Character, Character> pairMap = new HashMap<>();
+		pairMap.put('[', ']');
+		pairMap.put('{', '}');
+		pairMap.put('(', ')');// use for constant time search
+		Stack<Character> stack = new Stack<>();// it can be replaced with a  better unsynchronised ArrayDeque
+		int length = input.length();
+		for (int i = 0; i < length; i++) {
+			Character ch = input.charAt(i);
+			if (pairMap.containsKey(ch)) {
+				stack.push(ch);
+			} else if (stack.isEmpty() || !ch.equals(pairMap.get(stack.pop()))) {
+				return false;
+			}
+		}
+		return stack.isEmpty();
 	}
 	
 	public static int maxSumHourGlass(int[][] arr) {
