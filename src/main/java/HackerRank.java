@@ -1,12 +1,14 @@
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Currency;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -15,6 +17,8 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.swagger.models.auth.In;
 
 /**
  * @author sachin.srivastava
@@ -193,23 +197,84 @@ public class HackerRank {
 			System.out.println(st.getFname());
 		}
 	}
+
 	public static void main(String[] args) {
-		
+		bitSet();
 	}
 	
-	public static void maxUniqueNumbers() {
-		Scanner in = new Scanner(System.in);
-		int n = in.nextInt();
-		int m = in.nextInt();
-		int max = 0;
-		int[] inputNumbersArr = new int[n];
-		Deque deque = new ArrayDeque<>(m);
-		for (int i = 0; i < n; i++) {
-			int num = in.nextInt();
-			inputNumbersArr[i] = num;
+	
+	public static void bitSet() {
+		Scanner scan = new Scanner(System.in,"UTF-8");
+		int N = scan.nextInt();
+		int M = scan.nextInt();
+		BitSet B1 = new BitSet(N);
+		BitSet B2 = new BitSet(N);
+		Map<Integer, BitSet> map = new HashMap<>();
+		map.put(1, B1);
+		map.put(2, B2);
+		while(M-- > 0 && scan.hasNext()) {
+			String str = scan.next();
+			if(!str.isEmpty()){
+				int x = scan.nextInt();
+				int y = scan.nextInt();
+				if ("AND".equals(str)) {
+					map.get(x).and(map.get(y));
+				} else if ("ANDNOT".equals(str)) {
+					map.get(x).andNot(map.get(y));
+				} else if ("SET".equals(str)) {
+					map.get(x).set(y, true);
+				} else if ("FLIP".equals(str)) {
+					map.get(x).flip(y);
+				} else if ("OR".equals(str)) {
+					map.get(x).or(map.get(y));
+				} else if ("XOR".equals(str)) {
+					map.get(x).xor(map.get(y));
+				}
+				System.out.println(B1.cardinality() + " " + B2.cardinality());
+			}
 		}
-		System.out.println(max);
+		scan.close();
+	}
+	
+	public static void printBitsets(BitSet b1, BitSet b2, int size) {
+		int bit1 = 0;
+		int bit2 = 0;
+		for (int i = 0; i < size; i++) {
+			bit1 += b1.get(i) ? 1 : 0;
+		}
+		for (int i = 0; i < size; i++) {
+			bit2 += b2.get(i) ? 1 : 0;
+		}
+		System.out.println(bit1 + " " + bit2);
+	}
+	public static void maxUniqueNumbers() {
+		HashMap<Integer, Integer> map = new HashMap<>();
+		Deque<Integer> deque = new ArrayDeque<>();
 
+		Scanner scan = new Scanner(System.in);
+		int n = scan.nextInt();
+		int m = scan.nextInt();
+		int max = 0;
+		for (int i = 0; i < n; i++) {
+			if (i >= m) {
+				int head = deque.remove();
+				if (map.get(head)!=null && map.get(head)  > 1) {
+					map.put(head, map.get(head) - 1);
+				} else {
+					map.remove(head);
+				}
+			}
+			int num = scan.nextInt();
+			deque.add(num);
+			if(map.get(num)!=null){
+				map.put(num, map.get(num)+1);
+			} else {
+				map.put(num, 1);
+			}
+			max = Math.max(max, map.size());
+		}
+		scan.close();
+		System.out.println(max);
 	}
 	
 	public static long pow(int x, int y) {
