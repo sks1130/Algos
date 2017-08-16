@@ -1,6 +1,7 @@
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Collections;
@@ -8,17 +9,17 @@ import java.util.Comparator;
 import java.util.Currency;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import io.swagger.models.auth.In;
 
 /**
  * @author sachin.srivastava
@@ -197,11 +198,164 @@ public class HackerRank {
 			System.out.println(st.getFname());
 		}
 	}
+	
+	class Priorities {
+
+		public List<Student> getStudents(List<String> events) {
+			List<Student> list = new ArrayList<>();
+			PriorityQueue<Student> pq = new PriorityQueue<>(events.size(), new Comparator<Student>() {
+				@Override
+				public int compare(Student o1, Student o2) {
+					int diff = Double.valueOf(o2.getCgpa()).compareTo(Double.valueOf(o1.getCgpa()));
+					if (diff == 0) {
+						diff = o1.getFname().compareTo(o2.getFname());
+						if (diff == 0) {
+							diff = o1.getId() - o2.getId();
+						}
+					}
+					return diff;
+				}
+			});
+			int size = events.size();
+			for (int i = 0; i < size; i++) {
+				String[] strArr = events.get(i).split(" ");
+				if ("ENTER".equalsIgnoreCase(strArr[0])) {
+					Student s = new Student(Integer.parseInt(strArr[3]), strArr[1], Double.parseDouble(strArr[2]));
+					pq.add(s);
+				} else if ("SERVED".equalsIgnoreCase(strArr[0])) {
+					pq.poll();
+				}
+			}
+			int pqSize = pq.size();
+			for (int i = 0; i < pqSize; i++) {
+				list.add(pq.poll());
+			}
+			return list;
+		}
+	}
 
 	public static void main(String[] args) {
-		bitSet();
+		System.out.println(abs(2));
+
 	}
 	
+	public static long abs(long a ){
+		return a < 0 ? -a : a;
+	}
+	public static double abs(double a ){
+		return a < 0 ? -a : a;
+	}
+
+	static boolean isAnagramShorter(String first , String second){
+		int[] ch = new int[256];
+		for (int i = 0; i < first.length(); i++) {
+			int x = first.charAt(i) - 'a';
+			ch[Math.abs(x)]++;
+		}
+		for (int i = 0; i < second.length(); i++) {
+			int x = second.charAt(i) - 'a';
+			ch[Math.abs(x)]--;
+		}
+		for (int i = 0; i < ch.length; i++) {
+			if(ch[i]!=0){
+				return false;
+			}
+		}
+		return true;
+	}
+	static boolean isAnagram(String a, String b) {
+		if (a.length() != b.length()) {
+			return false;
+		}
+		Map<Character, Integer> mapA = new HashMap<>();
+		Map<Character, Integer> mapB = new HashMap<>();
+		for (int i = 0; i < a.length(); i++) {
+			char ch = a.toLowerCase().charAt(i);
+			char ch2 = b.toLowerCase().charAt(i);
+			if (mapA.get(ch) == null) {
+				mapA.put(ch, 1);
+			} else {
+				mapA.put(ch, mapA.get(ch) + 1);
+			}
+			if (mapB.get(ch2) == null) {
+				mapB.put(ch2, 1);
+			} else {
+				mapB.put(ch2, mapB.get(ch2) + 1);
+			}
+		}
+		for (Character key : mapA.keySet()) {
+			if (!mapA.get(key).equals(mapB.get(key))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static String checkAnagrams(String first  , String second ){
+		char[] c = new char[256];
+		String s = first + second;
+		for (int i = 0; i < s.length(); i++) {
+			char ch = s.charAt(i);
+			c[ch]++;
+		}
+		System.out.println(c);
+		return null;
+	}
+	
+	
+	public static String reverse(String str){
+		StringBuffer sb = new StringBuffer();;
+		sb.append(str);
+		return sb.reverse().toString();
+	}
+	
+	public static String isPalindrome(String str){
+		if(str == null || str.isEmpty() || str.length() ==1 ){
+			return "No";
+		}
+		if(isPalindrome(str).equals(reverse(str))){
+			return "Yes";
+		}
+		return "No";
+	}
+	public static String getMaxAndMinString(String str, int k) {
+		List<String> list = new ArrayList<>();
+		list = subString(str, k, list);
+		Collections.sort(list);
+		return list.get(0) + "\n" + list.get(list.size() - 1);
+	}
+	
+	public static List<String> subString(String str, int len, List<String> list) {
+		if (str == null || str.isEmpty() || str.length() < (len)) {
+			return list;
+		}
+		if (list == null) {
+			list = new ArrayList<>();
+		}
+		String sub = str.substring(0, len);
+		list.add(sub);
+		String rem = str.substring(1);
+		return subString(rem, len, list);
+	}
+	
+	public static void stringProblem() {
+		Scanner sc = new Scanner(System.in);
+		String A = sc.next();
+		String B = sc.next();
+		System.out.println(A.length() + B.length());
+		int comp = A.compareTo(B);
+		if (comp < 0) {
+			System.out.println("No");
+		} else {
+			System.out.println("Yes");
+		}
+		System.out.println(camelCasing(A) + " " + camelCasing(B));
+	}
+	public static String camelCasing(String str){
+		StringBuffer sb = new StringBuffer();
+		sb.append(str.substring(0, 1).toUpperCase() + (str.substring(1)));
+		return sb.toString();
+	}
 	
 	public static void bitSet() {
 		Scanner scan = new Scanner(System.in,"UTF-8");
@@ -311,6 +465,23 @@ public class HackerRank {
 	        this.name = name;
 	        this.score = score;
 	    }
+	}
+	
+	public static void bubbleSort(int[] a) {
+		// O(n2) and in space
+		for (int i = 0; i < a.length; i++) {
+			for (int j = i + 1; j < a.length; j++) {
+				if (a[i] > a[j]) {
+					swap(a, i, j);
+				}
+			}
+		}
+	}
+	
+	public static void swap(int[] arr, int i, int j) {
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
 	}
 	static class Student implements Comparator<Student>{
 		private int id;
