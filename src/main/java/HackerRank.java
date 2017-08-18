@@ -1,4 +1,7 @@
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -25,13 +28,14 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javassist.bytecode.stackmap.TypeData.ClassName;
+
 /**
  * @author sachin.srivastava
  * @github @sks1130
  *
  */
 public class HackerRank {
-	
 
 	private int ROW = 5, COL = 5;
 
@@ -53,6 +57,25 @@ public class HackerRank {
 		}
 		System.out.println();
 
+	}
+
+	public static void add(Integer... intArr) {
+		// vargs use case of adding the number and printing it
+		if (intArr == null || intArr.length < 2) {
+			return;
+		}
+		int sum = 0;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < intArr.length; i++) {
+			sum += intArr[i];
+			if (i >= 1) {
+				sb.append("+" + intArr[i]);
+			} else {
+				sb.append(intArr[i]);
+			}
+		}
+		sb.append("=" + sum);
+		System.out.println(sb.toString());
 	}
 
 	public static String getDay(String day, String month, String year) {
@@ -258,8 +281,8 @@ public class HackerRank {
 		}
 	}
 
-	public static List<String> tags(String str , List<String> list) {
-		if(str == null || str.isEmpty()){
+	public static List<String> tags(String str, List<String> list) {
+		if (str == null || str.isEmpty()) {
 			return list;
 		}
 		int start = str.indexOf("<");
@@ -270,10 +293,10 @@ public class HackerRank {
 		} else {
 			return list;
 		}
-		return tags(str.substring(end+1), list);
+		return tags(str.substring(end + 1), list);
 	}
 
-	public static  void bigIntegerOperations(){
+	public static void bigIntegerOperations() {
 		Scanner scan = new Scanner(System.in);
 		BigInteger big1 = scan.nextBigInteger();
 		BigInteger big2 = scan.nextBigInteger();
@@ -281,22 +304,22 @@ public class HackerRank {
 		System.out.println(big1.multiply(big2));
 		scan.close();
 	}
-	
-	public static int binarySearch(int[] arr , int key ){
-		//applicable to sorted sequence not for unsortef sequnece//TODO later
+
+	public static int binarySearch(int[] arr, int key) {
+		// applicable to sorted sequence not for unsortef sequnece//TODO later
 		int found = -1;
 		int len = arr.length;
 		int low = 0;
-		int high = len -1 ;
-		int mid = low + ((high-low)/2);
-		
-		//low to mid 
-		//mid +1 to len
-		
+		int high = len - 1;
+		int mid = low + ((high - low) / 2);
+
+		// low to mid
+		// mid +1 to len
+
 		int left = binarySearch(arr, key);
 		return found;
 	}
-	
+
 	public static void bigDecimalStringSorting() {
 		// Input
 		Scanner sc = new Scanner(System.in);
@@ -321,51 +344,76 @@ public class HackerRank {
 			System.out.println(s[i]);
 		}
 	}
-	public static void iteratorTest(){
 
-	      ArrayList mylist = new ArrayList();
-	      Scanner sc = new Scanner(System.in);
-	      int n = sc.nextInt();
-	      int m = sc.nextInt();
-	      for(int i = 0;i<n;i++){
-	         mylist.add(sc.nextInt());
-	      }
-	      
-	      mylist.add("###");
-	      for(int i=0;i<m;i++){
-	         mylist.add(sc.next());
-	      }
-	      
-	      Iterator it=func(mylist);
-	      while(it.hasNext()){
-	         Object element = it.next();
-	         System.out.println((String)element);
-	      }
-	   
+	public static void iteratorTest() {
+
+		ArrayList mylist = new ArrayList();
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		for (int i = 0; i < n; i++) {
+			mylist.add(sc.nextInt());
+		}
+
+		mylist.add("###");
+		for (int i = 0; i < m; i++) {
+			mylist.add(sc.next());
+		}
+
+		Iterator it = func(mylist);
+		while (it.hasNext()) {
+			Object element = it.next();
+			System.out.println((String) element);
+		}
+
 	}
-	static Iterator func(ArrayList mylist){
-	      Iterator it=mylist.iterator();
-	      while(it.hasNext()){
-	         Object element = it.next();
-	         if(!(element instanceof String)){//Hints: use instanceof operator
-	             it.remove();
-	         } else {
-	             break;
-	         }
-	      }
-	      return it;
-	      
-	   }
-		public static final MyCalculator my_calculator = new MyCalculator();
-	    public static final Scanner in = new Scanner(System.in);
-	    
-	    public static void main(String[] args) {
-	    	try {
-				System.out.println(generateSHA256("Javarmi123"));
-			} catch (Exception e) {
-				System.out.println(e);
-			} 
-	    }
+
+	static Iterator func(ArrayList mylist) {
+		Iterator it = mylist.iterator();
+		while (it.hasNext()) {
+			Object element = it.next();
+			if (!(element instanceof String)) {// Hints: use instanceof operator
+				it.remove();
+			} else {
+				break;
+			}
+		}
+		return it;
+
+	}
+
+	public static final MyCalculator my_calculator = new MyCalculator();
+	public static final Scanner in = new Scanner(System.in);
+
+	public static void main(String[] args) {
+		int num = 8;
+		System.out.println(num + " is " + new HackerRank.Inner().new Private().powerof2(num));
+	}
+
+	static class Inner {
+		// System.out.println(num + " is " + ((Solution.Inner.Private)(o =
+		// (Object) new Solution.Inner().new Private())).powerof2(num));
+		// System.out.println(num + " is " + new HackerRank.Inner().new
+		// Private().powerof2(num));
+		private class Private {
+			private String powerof2(int num) {
+				return ((num & num - 1) == 0) ? "power of 2" : "not a power of 2";
+			}
+		}
+	}
+
+	public static void reflection() {
+		Class student = Student.class;
+		Method[] methods = student.getDeclaredMethods();
+		ArrayList<String> methodList = new ArrayList<>();
+		for (Method method : methods) {
+			methodList.add(method.getName());
+		}
+		Collections.sort(methodList);
+		for (String name : methodList) {
+			System.out.println(name);
+		}
+	}
 
 	public static String generateSHA256(String input) throws Exception {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -379,28 +427,30 @@ public class HackerRank {
 		}
 		return hexStr;
 	}
-	   static class MyCalculator {
-		    /*
-		    * Create the method long power(int, int) here.
-		    */
-		     long power(int x , int y) throws Exception{
-		         if(x < 0 || y < 0){
-		             throw new Exception("n or p should not be negative.");
-		         } else if(x==0 && y==0 ){
-		              throw new Exception("n and p should not be zero.");
-		         }
-		         if(y == 0 && x!=0){
-		             return 1;
-		         } else if(x == 0 && y!=0){
-		        	 return 0;
-		         } else {
-		             return x*power(x,y-1);
-		         }
-		     }
-		    
+
+	static class MyCalculator {
+		/*
+		 * Create the method long power(int, int) here.
+		 */
+		long power(int x, int y) throws Exception {
+			if (x < 0 || y < 0) {
+				throw new Exception("n or p should not be negative.");
+			} else if (x == 0 && y == 0) {
+				throw new Exception("n and p should not be zero.");
+			}
+			if (y == 0 && x != 0) {
+				return 1;
+			} else if (x == 0 && y != 0) {
+				return 0;
+			} else {
+				return x * power(x, y - 1);
+			}
 		}
-	public static void validateHTMLTags(){
-		//hacker rank
+
+	}
+
+	public static void validateHTMLTags() {
+		// hacker rank
 		Scanner scan = new Scanner(System.in);
 		int testCases = Integer.parseInt(scan.nextLine());
 
@@ -417,7 +467,7 @@ public class HackerRank {
 				System.out.println("None");
 			}
 		}
-	
+
 	}
 
 	public static long abs(long a) {
@@ -694,6 +744,9 @@ public class HackerRank {
 
 		public double getCgpa() {
 			return cgpa;
+		}
+
+		public void anothermethod() {
 		}
 
 		@Override
