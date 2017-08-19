@@ -2,6 +2,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Comparator;
 import java.util.Currency;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -378,13 +381,6 @@ public class HackerRank {
 
 	public static final MyCalculator my_calculator = new MyCalculator();
 	public static final Scanner in = new Scanner(System.in);
-
-	public static void main(String[] args) {
-		int[] arr = new int[]{3,4,5,1,3,2,5,7,12,1,22,2,3,4,3};
-		//quickSort(arr);
-		mergeSort(arr);
-		System.out.println(Arrays.toString(arr));
-	}
 
 	static class Inner {
 		// System.out.println(num + " is " + ((Solution.Inner.Private)(o =
@@ -992,4 +988,228 @@ public class HackerRank {
 		}
 	}
 
+	public static String generateMD5(String input) {
+		if(input == null){
+			return null;
+		}
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			md.reset();
+			byte[] buffer = input.getBytes("UTF-8");
+			byte[] arr = md.digest(buffer);
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < arr.length; ++i) {
+				sb.append(Integer.toHexString((arr[i] & 0xFF) | 0x100).substring(1, 3));
+				//sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+				//
+				//convert the byte to hex format method 2
+//		        StringBuffer hexString = new StringBuffer();
+//		    	for (int i=0;i<mdbytes.length;i++) {
+//		    		String hex=Integer.toHexString(0xff & mdbytes[i]);
+//		   	     	if(hex.length()==1) hexString.append('0');
+//		   	     	hexString.append(hex);
+//		    	}
+//		    	System.out.println("Digest(in hex format):: " + hexString.toString());
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	class Flower{
+		
+		String whatsYourName(){
+			return "I have many names and types.";
+		}
+	}
+	class Jasmine extends Flower{
+		@Override
+		String whatsYourName(){
+			return "Jasmine";
+		}
+	}
+	class Lily extends Flower{
+		@Override
+		String whatsYourName(){
+			return "Lily";
+		}
+	}
+	class Lotus extends Flower{
+		@Override
+		String whatsYourName(){
+			return "Lotus";
+		}
+	}
+	class State{
+		
+		Flower yourNationalFlower(){
+			return new Flower();
+		}
+	}
+	class WestBengal extends State{
+		
+		@Override
+		Jasmine yourNationalFlower(){
+			return new Jasmine();
+		}
+	}
+	class Karnataka extends State{
+		
+		@Override
+		Lotus yourNationalFlower(){
+			return new Lotus();
+		}
+	}
+	class AndhraPradesh extends State{
+		
+		@Override
+		Lily yourNationalFlower(){
+			return new Lily();
+		}
+	}
+	
+	interface PerformOperation {
+		 boolean check(int a);
+		}
+
+	class MyMath {
+		public boolean checker(PerformOperation p, int num) {
+			return p.check(num);
+		}
+
+		public PerformOperation isOdd() {
+			return n -> (n & 1) == 1;
+		}
+
+		public PerformOperation isPrime() {
+			return n -> {
+				if (n < 2) {
+					return false;
+				}
+				return BigInteger.valueOf(n).isProbablePrime(1);
+			};
+		}
+		
+		public PerformOperation isPalindrome(){
+			return n -> {
+				return new StringBuilder().append(n).reverse().toString().equals(Integer.toString(n));
+			};
+		}
+		
+	}
+	
+	class Graph{
+		
+		private Map<Integer, Node> nodeLookup = new HashMap<>();
+		
+		 class Node{
+			private int id;
+			LinkedList<Node> adj = new LinkedList<>();
+			private Node(int id) {
+				this.id = id;
+			}
+		}
+
+		public void addNode(int id) {
+			if (nodeLookup.get(id) == null) {
+				nodeLookup.put(id, new Node(id));
+			}
+		}
+		private Node getNode(int id){
+			return nodeLookup.get(id);
+		}
+		public void addEdge(int src , int dest){
+			Node s = getNode(src);
+			Node d = getNode(dest);
+			s.adj.add(d);
+		}
+		public boolean hasPathDfs(int src , int dest){
+			//more of recursive function asking adjacent nodes and keep the array of visited nodes
+			Node s = getNode(src);
+			Node d = getNode(dest);
+			Set<Integer> visited = new HashSet<>();
+			return hasPathDfs(s, d, visited);
+		}
+		public boolean hasPathDfs(Node src , Node dest , Set<Integer> visited){
+			//more of recursive function asking adjacent nodes and keep the array of visited nodes
+			if(visited.contains(src.id)){
+				return false;
+			}
+			if(src.id == dest.id){
+				return true;
+			}
+			visited.add(src.id);
+			for (Node child : src.adj) {
+				if(hasPathDfs(child, dest, visited)){
+					return true;
+				}
+			}
+			return false;
+		}
+		public boolean hasPathBFS(int src , int dest){
+			if(src == dest){
+				return true;
+			}
+			return hasPathBFS(src, dest);
+		}
+		private  boolean hasPathBFS(Node src , Node dest){
+			LinkedList<Node> nextToVisit = new LinkedList<>();
+			Set<Integer> visited = new HashSet<>();
+			nextToVisit.add(src);
+			while(!nextToVisit.isEmpty()){
+				Node node = nextToVisit.remove();
+				if(node.id == dest.id){
+					return true;
+				}
+				if(visited.contains(node.id)){
+					continue;
+				}
+				visited.add(node.id);
+				for (Node child : node.adj) {
+					nextToVisit.add(child);
+				}
+			}
+			return false;
+		}
+		
+	}
+	
+	class Trie{
+		char[] ch = new char[26];
+		List<Node> trieParent = new ArrayList<>();
+		String alphabets = "abcdefghijklmnopqrstuvwxyz";
+		Trie(){
+			for(int i=0; i < alphabets.length() -1; i++){
+				ch[i] = alphabets.charAt(i);
+				Node node = new Node(alphabets.charAt(i)); 
+				node.isWord = false;
+				trieParent.add(node);
+			}
+		}
+		public void addWord(String word){
+			
+		} 
+		
+		class Node{
+			boolean isWord;
+			Character c;
+			Map<Character, Node> children = new HashMap<>();
+			private Node(Character c ){
+				this.c = c;
+			}
+			void addNode(Character c){
+				Node node  = new Node(c);
+			}
+			
+		}
+	}
+		public static void main(String[] args) {
+			int n = 898;
+			String s2 = new StringBuilder().append(n).reverse().toString();
+			String s3 = Integer.toString(n);
+			System.out.println(s2.equals(s3));
+
+		}
 }
