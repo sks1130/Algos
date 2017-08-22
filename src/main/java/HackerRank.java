@@ -419,34 +419,36 @@ public class HackerRank {
 		}
 		return hexStr;
 	}
-	public static void quickSort(int[] arr){
-		quickSort(arr, 0, arr.length -1);
+
+	public static void quickSort(int[] arr) {
+		quickSort(arr, 0, arr.length - 1);
 	}
-	
-	public static void mergeSort(int[] arr){
-		mergeSort(arr, new int[arr.length] ,0, arr.length-1);
+
+	public static void mergeSort(int[] arr) {
+		mergeSort(arr, new int[arr.length], 0, arr.length - 1);
 	}
-	public static void mergeSort(int[] arr, int[] temp, int leftStart , int rightEnd){
-		if(leftStart >= rightEnd){
+
+	public static void mergeSort(int[] arr, int[] temp, int leftStart, int rightEnd) {
+		if (leftStart >= rightEnd) {
 			return;
 		}
-		int mid = (leftStart+rightEnd)/2;
-		mergeSort(arr,temp, leftStart, mid);
-		mergeSort(arr,temp, mid+1, rightEnd);
-		merge(arr,temp, leftStart , rightEnd);
+		int mid = (leftStart + rightEnd) / 2;
+		mergeSort(arr, temp, leftStart, mid);
+		mergeSort(arr, temp, mid + 1, rightEnd);
+		merge(arr, temp, leftStart, rightEnd);
 	}
-	
-	public static void merge(int[] arr , int[] temp, int leftStart , int rightEnd){
-		int leftEnd = (leftStart+rightEnd)/2;
-		int rightStart = leftEnd +1;
-		int size = rightEnd - leftStart +1;
-		
+
+	public static void merge(int[] arr, int[] temp, int leftStart, int rightEnd) {
+		int leftEnd = (leftStart + rightEnd) / 2;
+		int rightStart = leftEnd + 1;
+		int size = rightEnd - leftStart + 1;
+
 		int left = leftStart;
 		int right = rightStart;
 		int index = leftStart;
-		
-		while(left<= leftEnd && right <= rightEnd){
-			if(arr[left] <= arr[right]){
+
+		while (left <= leftEnd && right <= rightEnd) {
+			if (arr[left] <= arr[right]) {
 				temp[index] = arr[left];
 				left++;
 			} else {
@@ -455,8 +457,8 @@ public class HackerRank {
 			}
 			index++;
 		}
-		System.arraycopy(arr, left, temp, index, leftEnd-left+1);
-		System.arraycopy(arr, right, temp, index, rightEnd-right+1);
+		System.arraycopy(arr, left, temp, index, leftEnd - left + 1);
+		System.arraycopy(arr, right, temp, index, rightEnd - right + 1);
 		System.arraycopy(temp, leftStart, arr, leftStart, size);
 	}
 
@@ -486,6 +488,7 @@ public class HackerRank {
 		}
 		return left;
 	}
+
 	static class MyCalculator {
 		/*
 		 * Create the method long power(int, int) here.
@@ -989,7 +992,7 @@ public class HackerRank {
 	}
 
 	public static String generateMD5(String input) {
-		if(input == null){
+		if (input == null) {
 			return null;
 		}
 		MessageDigest md;
@@ -1001,16 +1004,18 @@ public class HackerRank {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < arr.length; ++i) {
 				sb.append(Integer.toHexString((arr[i] & 0xFF) | 0x100).substring(1, 3));
-				//sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+				// sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100,
+				// 16).substring(1));
 				//
-				//convert the byte to hex format method 2
-//		        StringBuffer hexString = new StringBuffer();
-//		    	for (int i=0;i<mdbytes.length;i++) {
-//		    		String hex=Integer.toHexString(0xff & mdbytes[i]);
-//		   	     	if(hex.length()==1) hexString.append('0');
-//		   	     	hexString.append(hex);
-//		    	}
-//		    	System.out.println("Digest(in hex format):: " + hexString.toString());
+				// convert the byte to hex format method 2
+				// StringBuffer hexString = new StringBuffer();
+				// for (int i=0;i<mdbytes.length;i++) {
+				// String hex=Integer.toHexString(0xff & mdbytes[i]);
+				// if(hex.length()==1) hexString.append('0');
+				// hexString.append(hex);
+				// }
+				// System.out.println("Digest(in hex format):: " +
+				// hexString.toString());
 			}
 			return sb.toString();
 		} catch (Exception e) {
@@ -1018,61 +1023,69 @@ public class HackerRank {
 		}
 		return null;
 	}
-	class Flower{
-		
-		String whatsYourName(){
+
+	class Flower {
+
+		String whatsYourName() {
 			return "I have many names and types.";
 		}
 	}
-	class Jasmine extends Flower{
+
+	class Jasmine extends Flower {
 		@Override
-		String whatsYourName(){
+		String whatsYourName() {
 			return "Jasmine";
 		}
 	}
-	class Lily extends Flower{
+
+	class Lily extends Flower {
 		@Override
-		String whatsYourName(){
+		String whatsYourName() {
 			return "Lily";
 		}
 	}
-	class Lotus extends Flower{
+
+	class Lotus extends Flower {
 		@Override
-		String whatsYourName(){
+		String whatsYourName() {
 			return "Lotus";
 		}
 	}
-	class State{
-		
-		Flower yourNationalFlower(){
+
+	class State {
+
+		Flower yourNationalFlower() {
 			return new Flower();
 		}
 	}
-	class WestBengal extends State{
-		
+
+	class WestBengal extends State {
+
 		@Override
-		Jasmine yourNationalFlower(){
+		Jasmine yourNationalFlower() {
 			return new Jasmine();
 		}
 	}
-	class Karnataka extends State{
-		
+
+	class Karnataka extends State {
+
 		@Override
-		Lotus yourNationalFlower(){
+		Lotus yourNationalFlower() {
 			return new Lotus();
 		}
 	}
-	class AndhraPradesh extends State{
-		
+
+	class AndhraPradesh extends State {
+
 		@Override
-		Lily yourNationalFlower(){
+		Lily yourNationalFlower() {
 			return new Lily();
 		}
 	}
-	
+
 	interface PerformOperation {
-		 boolean check(int a);
-		}
+		boolean check(int a);
+	}
 
 	class MyMath {
 		public boolean checker(PerformOperation p, int num) {
@@ -1091,22 +1104,23 @@ public class HackerRank {
 				return BigInteger.valueOf(n).isProbablePrime(1);
 			};
 		}
-		
-		public PerformOperation isPalindrome(){
+
+		public PerformOperation isPalindrome() {
 			return n -> {
 				return new StringBuilder().append(n).reverse().toString().equals(Integer.toString(n));
 			};
 		}
-		
+
 	}
-	
-	class Graph{
-		
+
+	class Graph {
+
 		private Map<Integer, Node> nodeLookup = new HashMap<>();
-		
-		 class Node{
+
+		class Node {
 			private int id;
 			LinkedList<Node> adj = new LinkedList<>();
+
 			private Node(int id) {
 				this.id = id;
 			}
@@ -1117,53 +1131,61 @@ public class HackerRank {
 				nodeLookup.put(id, new Node(id));
 			}
 		}
-		private Node getNode(int id){
+
+		private Node getNode(int id) {
 			return nodeLookup.get(id);
 		}
-		public void addEdge(int src , int dest){
+
+		public void addEdge(int src, int dest) {
 			Node s = getNode(src);
 			Node d = getNode(dest);
 			s.adj.add(d);
 		}
-		public boolean hasPathDfs(int src , int dest){
-			//more of recursive function asking adjacent nodes and keep the array of visited nodes
+
+		public boolean hasPathDfs(int src, int dest) {
+			// more of recursive function asking adjacent nodes and keep the
+			// array of visited nodes
 			Node s = getNode(src);
 			Node d = getNode(dest);
 			Set<Integer> visited = new HashSet<>();
 			return hasPathDfs(s, d, visited);
 		}
-		public boolean hasPathDfs(Node src , Node dest , Set<Integer> visited){
-			//more of recursive function asking adjacent nodes and keep the array of visited nodes
-			if(visited.contains(src.id)){
+
+		public boolean hasPathDfs(Node src, Node dest, Set<Integer> visited) {
+			// more of recursive function asking adjacent nodes and keep the
+			// array of visited nodes
+			if (visited.contains(src.id)) {
 				return false;
 			}
-			if(src.id == dest.id){
+			if (src.id == dest.id) {
 				return true;
 			}
 			visited.add(src.id);
 			for (Node child : src.adj) {
-				if(hasPathDfs(child, dest, visited)){
+				if (hasPathDfs(child, dest, visited)) {
 					return true;
 				}
 			}
 			return false;
 		}
-		public boolean hasPathBFS(int src , int dest){
-			if(src == dest){
+
+		public boolean hasPathBFS(int src, int dest) {
+			if (src == dest) {
 				return true;
 			}
 			return hasPathBFS(src, dest);
 		}
-		private  boolean hasPathBFS(Node src , Node dest){
+
+		private boolean hasPathBFS(Node src, Node dest) {
 			LinkedList<Node> nextToVisit = new LinkedList<>();
 			Set<Integer> visited = new HashSet<>();
 			nextToVisit.add(src);
-			while(!nextToVisit.isEmpty()){
+			while (!nextToVisit.isEmpty()) {
 				Node node = nextToVisit.remove();
-				if(node.id == dest.id){
+				if (node.id == dest.id) {
 					return true;
 				}
-				if(visited.contains(node.id)){
+				if (visited.contains(node.id)) {
 					continue;
 				}
 				visited.add(node.id);
@@ -1173,43 +1195,126 @@ public class HackerRank {
 			}
 			return false;
 		}
-		
+
 	}
-	
-	class Trie{
+
+	class Trie {
 		char[] ch = new char[26];
 		List<Node> trieParent = new ArrayList<>();
 		String alphabets = "abcdefghijklmnopqrstuvwxyz";
-		Trie(){
-			for(int i=0; i < alphabets.length() -1; i++){
+
+		Trie() {
+			for (int i = 0; i < alphabets.length() - 1; i++) {
 				ch[i] = alphabets.charAt(i);
-				Node node = new Node(alphabets.charAt(i)); 
+				Node node = new Node(alphabets.charAt(i));
 				node.isWord = false;
 				trieParent.add(node);
 			}
 		}
-		public void addWord(String word){
-			
-		} 
-		
-		class Node{
+
+		public void addWord(String word) {
+
+		}
+
+		class Node {
 			boolean isWord;
 			Character c;
 			Map<Character, Node> children = new HashMap<>();
-			private Node(Character c ){
+
+			private Node(Character c) {
 				this.c = c;
 			}
-			void addNode(Character c){
-				Node node  = new Node(c);
+
+			void addNode(Character c) {
+				Node node = new Node(c);
 			}
-			
-		}
-	}
-		public static void main(String[] args) {
-			int n = 898;
-			String s2 = new StringBuilder().append(n).reverse().toString();
-			String s3 = Integer.toString(n);
-			System.out.println(s2.equals(s3));
 
 		}
+	}
+
+	public static void main(String[] args) {
+		int[] arr = { 11, 10, 9, 8, 7, 6, 4, 5, 3, 2, 1 };
+		duplicateInNoExtraSpace(arr);
+	}
+	
+	public static void duplicateInNoExtraSpace(int[] arr) {
+		//awesome solution to focus 
+		int n = arr.length;
+		for (int i = 0; i < n; i++) {
+			arr[i] = arr[i] - 1;
+		}
+		for (int j = 0; j < n; j++) {
+			arr[arr[j] % n] += n;
+		}
+		for (int i = 0; i < n; i++) {
+			if (arr[i] / n >= 2) {
+				System.out.println(i + 1 + "-->" + arr[i] / n);// finding
+			}
+		}
+	}
+	static void findCounts(int arr[], int n) 
+    {
+        // Traverse all array elements
+        int i = 0;
+        while (i < n) 
+        {
+            // If this element is already processed,
+            // then nothing to do
+            if (arr[i] <= 0) 
+            {
+                i++;
+                continue;
+            }
+ 
+            // Find index corresponding to this element
+            // For example, index for 5 is 4
+            int elementIndex = arr[i] - 1;
+ 
+            // If the elementIndex has an element that is not
+            // processed yet, then first store that element
+            // to arr[i] so that we don't loose anything.
+            if (arr[elementIndex] > 0) 
+            {
+                arr[i] = arr[elementIndex];
+ 
+                // After storing arr[elementIndex], change it
+                // to store initial count of 'arr[i]'
+                arr[elementIndex] = -1;
+            } 
+            else
+            {
+                // If this is NOT first occurrence of arr[i],
+                // then increment its count.
+                arr[elementIndex]--;
+ 
+                // And initialize arr[i] as 0 means the element
+                // 'i+1' is not seen so far
+                arr[i] = 0;
+                i++;
+            }
+        }
+ 
+        System.out.println("Below are counts of all elements");
+        for (int j = 0; j < n; j++)
+            System.out.println(j+1 + "->" + Math.abs(arr[j]));
+    }
+ 
+	static void printfrequency(int arr[], int n) 
+    {
+        // Subtract 1 from every element so that the elements
+        // become in range from 0 to n-1
+        for (int j = 0; j < n; j++)
+            arr[j] = arr[j] - 1;
+ 
+        // Use every element arr[i] as index and add 'n' to
+        // element present at arr[i]%n to keep track of count of
+        // occurrences of arr[i]
+        for (int i = 0; i < n; i++)
+            arr[arr[i] % n] = arr[arr[i] % n] + n;
+ 
+        // To print counts, simply print the number of times n
+        // was added at index corresponding to every element
+        for (int i = 0; i < n; i++)
+            System.out.println(i + 1 + "->" + arr[i] / n);
+    }
 }
