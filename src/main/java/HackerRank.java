@@ -1212,9 +1212,6 @@ public class HackerRank {
 			}
 		}
 
-		public void addWord(String word) {
-
-		}
 
 		class Node {
 			boolean isWord;
@@ -1233,8 +1230,32 @@ public class HackerRank {
 	}
 
 	public static void main(String[] args) {
-		int[] arr = { 11, 10, 9, 8, 7, 6, 4, 5, 3, 2, 1 };
-		duplicateInNoExtraSpace(arr);
+		  Scanner in = new Scanner(System.in);
+	        int n = in.nextInt();
+	        int a[][] = new int[n][n];
+	        for(int a_i=0; a_i < n; a_i++){
+	            for(int a_j=0; a_j < n; a_j++){
+	                a[a_i][a_j] = in.nextInt();
+	            }
+	        }
+	        sumDiagonals(a);
+	}
+	
+	public static void sumDiagonals(int[][] mat) {
+		int sumDiag1 = 0;
+		int sumDiag2 = 0;
+		int n = mat.length;
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < mat[row].length; col++) {
+				if (row == col) {
+					sumDiag1 += mat[row][col];
+				}
+				if ((col == n - 1 - row)) {
+					sumDiag2 += mat[row][col];
+				}
+			}
+		}
+		System.out.println(Math.abs(sumDiag1 - sumDiag2));
 	}
 	
 	public static void duplicateInNoExtraSpace(int[] arr) {
