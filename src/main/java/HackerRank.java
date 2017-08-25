@@ -3,6 +3,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +28,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.swagger.models.auth.In;
 
 /**
  * @author sachin.srivastava
@@ -1212,7 +1216,6 @@ public class HackerRank {
 			}
 		}
 
-
 		class Node {
 			boolean isWord;
 			Character c;
@@ -1230,17 +1233,36 @@ public class HackerRank {
 	}
 
 	public static void main(String[] args) {
-		  Scanner in = new Scanner(System.in);
-	        int n = in.nextInt();
-	        int a[][] = new int[n][n];
-	        for(int a_i=0; a_i < n; a_i++){
-	            for(int a_j=0; a_j < n; a_j++){
-	                a[a_i][a_j] = in.nextInt();
-	            }
-	        }
-	        sumDiagonals(a);
+		int[] arr = {1,2,3,4,5,6};
+		System.out.println(Arrays.toString(arraysLeftRotation(arr, arr.length, 11)));
+		
+
 	}
-	
+
+	public static void minAndMaxSum(int[] arr) {
+		Arrays.sort(arr);
+		int min = arr[0];
+		int max = arr[arr.length - 1];
+		long sum = 0;
+		for (int i = 0; i < arr.length; i++) {
+			sum += arr[i];
+		}
+		System.out.println((sum - max) + " " + (sum - min));
+
+	}
+
+	public static void formatDecimal() {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		for (int i = 0; i < n; i++) {
+			String str = "";
+			for (int j = 0; j < i + 1; j++) {
+				str += "#";
+			}
+			System.out.println(String.format("%1$" + n + "s", str));
+		}
+	}
+
 	public static void sumDiagonals(int[][] mat) {
 		int sumDiag1 = 0;
 		int sumDiag2 = 0;
@@ -1257,9 +1279,9 @@ public class HackerRank {
 		}
 		System.out.println(Math.abs(sumDiag1 - sumDiag2));
 	}
-	
+
 	public static void duplicateInNoExtraSpace(int[] arr) {
-		//awesome solution to focus 
+		// awesome solution to focus
 		int n = arr.length;
 		for (int i = 0; i < n; i++) {
 			arr[i] = arr[i] - 1;
@@ -1273,69 +1295,106 @@ public class HackerRank {
 			}
 		}
 	}
-	static void findCounts(int arr[], int n) 
-    {
-        // Traverse all array elements
-        int i = 0;
-        while (i < n) 
-        {
-            // If this element is already processed,
-            // then nothing to do
-            if (arr[i] <= 0) 
-            {
-                i++;
-                continue;
-            }
- 
-            // Find index corresponding to this element
-            // For example, index for 5 is 4
-            int elementIndex = arr[i] - 1;
- 
-            // If the elementIndex has an element that is not
-            // processed yet, then first store that element
-            // to arr[i] so that we don't loose anything.
-            if (arr[elementIndex] > 0) 
-            {
-                arr[i] = arr[elementIndex];
- 
-                // After storing arr[elementIndex], change it
-                // to store initial count of 'arr[i]'
-                arr[elementIndex] = -1;
-            } 
-            else
-            {
-                // If this is NOT first occurrence of arr[i],
-                // then increment its count.
-                arr[elementIndex]--;
- 
-                // And initialize arr[i] as 0 means the element
-                // 'i+1' is not seen so far
-                arr[i] = 0;
-                i++;
-            }
-        }
- 
-        System.out.println("Below are counts of all elements");
-        for (int j = 0; j < n; j++)
-            System.out.println(j+1 + "->" + Math.abs(arr[j]));
-    }
- 
-	static void printfrequency(int arr[], int n) 
-    {
-        // Subtract 1 from every element so that the elements
-        // become in range from 0 to n-1
-        for (int j = 0; j < n; j++)
-            arr[j] = arr[j] - 1;
- 
-        // Use every element arr[i] as index and add 'n' to
-        // element present at arr[i]%n to keep track of count of
-        // occurrences of arr[i]
-        for (int i = 0; i < n; i++)
-            arr[arr[i] % n] = arr[arr[i] % n] + n;
- 
-        // To print counts, simply print the number of times n
-        // was added at index corresponding to every element
-        for (int i = 0; i < n; i++)
-            System.out.println(i + 1 + "->" + arr[i] / n);
-    }
+
+	static void findCounts(int arr[], int n) {
+		// Traverse all array elements
+		int i = 0;
+		while (i < n) {
+			// If this element is already processed,
+			// then nothing to do
+			if (arr[i] <= 0) {
+				i++;
+				continue;
+			}
+
+			// Find index corresponding to this element
+			// For example, index for 5 is 4
+			int elementIndex = arr[i] - 1;
+
+			// If the elementIndex has an element that is not
+			// processed yet, then first store that element
+			// to arr[i] so that we don't loose anything.
+			if (arr[elementIndex] > 0) {
+				arr[i] = arr[elementIndex];
+
+				// After storing arr[elementIndex], change it
+				// to store initial count of 'arr[i]'
+				arr[elementIndex] = -1;
+			} else {
+				// If this is NOT first occurrence of arr[i],
+				// then increment its count.
+				arr[elementIndex]--;
+
+				// And initialize arr[i] as 0 means the element
+				// 'i+1' is not seen so far
+				arr[i] = 0;
+				i++;
+			}
+		}
+
+		System.out.println("Below are counts of all elements");
+		for (int j = 0; j < n; j++)
+			System.out.println(j + 1 + "->" + Math.abs(arr[j]));
+	}
+
+	static void printfrequency(int arr[], int n) {
+		// Subtract 1 from every element so that the elements
+		// become in range from 0 to n-1
+		for (int j = 0; j < n; j++)
+			arr[j] = arr[j] - 1;
+
+		// Use every element arr[i] as index and add 'n' to
+		// element present at arr[i]%n to keep track of count of
+		// occurrences of arr[i]
+		for (int i = 0; i < n; i++)
+			arr[arr[i] % n] = arr[arr[i] % n] + n;
+
+		// To print counts, simply print the number of times n
+		// was added at index corresponding to every element
+		for (int i = 0; i < n; i++)
+			System.out.println(i + 1 + "->" + arr[i] / n);
+	}
+
+	public static void reverseStack(Stack<Integer> stack) {
+		if (stack.isEmpty() || stack == null) {
+			return;
+		}
+		if (!stack.isEmpty()) {
+			Integer top = stack.pop();
+			reverseStack(stack);
+			reverseStack(stack, top);
+		}
+
+	}
+
+	public static void reverseStack(Stack<Integer> stack, Integer top) {
+		if (stack.isEmpty()) {
+			stack.push(top);
+		} else {
+			Integer x = stack.pop();
+			reverseStack(stack, top);
+			stack.push(x);
+		}
+	}
+	public static int[] arraysLeftRotation(int[] a, int n , int k){
+		if(n == k){
+			return a;
+		}
+		if(k > n){
+			k = k % n;
+		}
+		int[] arr = new int[n];
+		int j = 0;
+		for (int i = 0; i < a.length; i++) {
+			if(i > k-1){
+				arr[j] = a[i];
+				j++;
+			}
+		}
+		int diff = arr.length-j;
+		for(int p=0; p<diff;p++,j++){
+			arr[j] = a[p];
+		}
+		return arr;
+	}
 }
