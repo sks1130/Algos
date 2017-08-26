@@ -2,8 +2,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -29,8 +26,6 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.swagger.models.auth.In;
-
 /**
  * @author sachin.srivastava
  * @github @sks1130
@@ -38,6 +33,7 @@ import io.swagger.models.auth.In;
  */
 public class HackerRank {
 
+	@SuppressWarnings("unused")
 	private int ROW = 5, COL = 5;
 
 	public HackerRank(int row, int col) {
@@ -138,6 +134,7 @@ public class HackerRank {
 			}
 
 		}
+		scan.close();
 	}
 
 	public static boolean canWin(int leap, int[] game) {
@@ -157,6 +154,7 @@ public class HackerRank {
 			}
 			in.nextLine();
 		}
+		in.close();
 		while (in.hasNext()) {
 			String s = in.nextLine();
 			Integer phone = nameNumberMap.get(s.toLowerCase());
@@ -215,6 +213,7 @@ public class HackerRank {
 			studentList.add(st);
 			testCases--;
 		}
+		in.close();
 		Collections.sort(studentList, new Comparator<Student>() {
 			@Override
 			public int compare(Student o1, Student o2) {
@@ -306,20 +305,6 @@ public class HackerRank {
 		scan.close();
 	}
 
-	public static int binarySearch(int[] arr, int key) {
-		// applicable to sorted sequence not for unsortef sequnece//TODO later
-		int found = -1;
-		int len = arr.length;
-		int low = 0;
-		int high = len - 1;
-		int mid = low + ((high - low) / 2);
-
-		// low to mid
-		// mid +1 to len
-
-		int left = binarySearch(arr, key);
-		return found;
-	}
 
 	public static void bigDecimalStringSorting() {
 		// Input
@@ -346,6 +331,7 @@ public class HackerRank {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void iteratorTest() {
 
 		ArrayList mylist = new ArrayList();
@@ -360,7 +346,7 @@ public class HackerRank {
 		for (int i = 0; i < m; i++) {
 			mylist.add(sc.next());
 		}
-
+		sc.close();
 		Iterator it = func(mylist);
 		while (it.hasNext()) {
 			Object element = it.next();
@@ -369,6 +355,7 @@ public class HackerRank {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	static Iterator func(ArrayList mylist) {
 		Iterator it = mylist.iterator();
 		while (it.hasNext()) {
@@ -391,6 +378,7 @@ public class HackerRank {
 		// (Object) new Solution.Inner().new Private())).powerof2(num));
 		// System.out.println(num + " is " + new HackerRank.Inner().new
 		// Private().powerof2(num));
+		@SuppressWarnings("unused")
 		private class Private {
 			private String powerof2(int num) {
 				return ((num & num - 1) == 0) ? "power of 2" : "not a power of 2";
@@ -398,6 +386,7 @@ public class HackerRank {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static void reflection() {
 		Class student = Student.class;
 		Method[] methods = student.getDeclaredMethods();
@@ -532,6 +521,7 @@ public class HackerRank {
 				System.out.println("None");
 			}
 		}
+		scan.close();
 
 	}
 
@@ -648,6 +638,7 @@ public class HackerRank {
 		} else {
 			System.out.println("Yes");
 		}
+		sc.close();
 		System.out.println(camelCasing(A) + " " + camelCasing(B));
 	}
 
@@ -1180,6 +1171,7 @@ public class HackerRank {
 			return hasPathBFS(src, dest);
 		}
 
+		@SuppressWarnings("unused")
 		private boolean hasPathBFS(Node src, Node dest) {
 			LinkedList<Node> nextToVisit = new LinkedList<>();
 			Set<Integer> visited = new HashSet<>();
@@ -1202,41 +1194,21 @@ public class HackerRank {
 
 	}
 
-	class Trie {
-		char[] ch = new char[26];
-		List<Node> trieParent = new ArrayList<>();
-		String alphabets = "abcdefghijklmnopqrstuvwxyz";
-
-		Trie() {
-			for (int i = 0; i < alphabets.length() - 1; i++) {
-				ch[i] = alphabets.charAt(i);
-				Node node = new Node(alphabets.charAt(i));
-				node.isWord = false;
-				trieParent.add(node);
-			}
-		}
-
-		class Node {
-			boolean isWord;
-			Character c;
-			Map<Character, Node> children = new HashMap<>();
-
-			private Node(Character c) {
-				this.c = c;
-			}
-
-			void addNode(Character c) {
-				Node node = new Node(c);
-			}
-
-		}
-	}
-
 	public static void main(String[] args) {
-		int[] arr = {1,2,3,4,5,6};
-		System.out.println(Arrays.toString(arraysLeftRotation(arr, arr.length, 11)));
 		
-
+		tries();
+	}
+	
+	public static void tries(){
+		//excellent way of adding nodes and searchign a word frequency from the tree
+		//time complexit O(n) requires O(n) space
+		TrieNode node = new TrieNode();
+		node.add("hackerhackerhacker");
+		node.add("hackerrank");
+		node.add("hackos");
+		System.out.println(node.find("hac"));
+		System.out.println(node.find("hak"));
+		System.out.println(node.find("hacker"));
 	}
 
 	public static void minAndMaxSum(int[] arr) {
@@ -1261,6 +1233,7 @@ public class HackerRank {
 			}
 			System.out.println(String.format("%1$" + n + "s", str));
 		}
+		in.close();
 	}
 
 	public static void sumDiagonals(int[][] mat) {
@@ -1376,25 +1349,148 @@ public class HackerRank {
 			stack.push(x);
 		}
 	}
-	public static int[] arraysLeftRotation(int[] a, int n , int k){
-		if(n == k){
+
+	public static int[] arraysLeftRotation(int[] a, int n, int k) {
+		if (n == k) {
 			return a;
 		}
-		if(k > n){
+		if (k > n) {
 			k = k % n;
 		}
 		int[] arr = new int[n];
 		int j = 0;
 		for (int i = 0; i < a.length; i++) {
-			if(i > k-1){
+			if (i > k - 1) {
 				arr[j] = a[i];
 				j++;
 			}
 		}
-		int diff = arr.length-j;
-		for(int p=0; p<diff;p++,j++){
+		int diff = arr.length - j;
+		for (int p = 0; p < diff; p++, j++) {
 			arr[j] = a[p];
 		}
 		return arr;
+	}
+
+	public static boolean checkBST(BinaryNode root) {
+		// root node must be greater than left tree and lesser than right tree
+		return checkBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		// Inorder traversal
+	}
+
+	public static boolean checkBST(BinaryNode root, Integer min, Integer max) {
+		// awesome solution
+		// O(logn) and time complexityO(n) -- linear
+		if (root == null) {
+			return true;
+		}
+		if (root.data < min || root.data > max) {
+			return false;
+		}
+		return checkBST(root.left, min, root.data - 1) && checkBST(root.right, root.data + 1, max);
+	}
+
+	static class BinaryNode {
+		int data;
+		BinaryNode left;
+		BinaryNode right;
+
+		public BinaryNode(int data) {
+			this.data = data;
+		}
+	}
+
+	public static int numberNeeded(String first, String second) {
+		int count = 0;
+		int[] c1 = new int[26];
+		int[] c2 = new int[26];
+
+		for (int i = 0; i < first.length(); i++) {
+			char c = first.charAt(i);
+			int off = c - 'a';
+			c1[off]++;
+		}
+		for (int i = 0; i < second.length(); i++) {
+			char c = second.charAt(i);
+			int off = c - 'a';
+			c2[off]++;
+		}
+		for (int i = 0; i < c2.length; i++) {
+			if(c2[i] != c1[i]  ){
+				int abs = Math.abs(c2[i] - c1[i]);
+				int j = 0;
+				while(abs > 0 && j < abs ){
+					count++;
+					j++;
+				}
+			}
+		}
+		System.out.println(Arrays.toString(c1));
+		System.out.println(Arrays.toString(c2));
+		return count;
+	}
+	static class TrieNode {
+		
+		  private static final int Num_Chars = 26;
+		  TrieNode[] children = new TrieNode[Num_Chars];
+		  int size = 0;
+		  private static int getCharIndex(Character c){
+			  return c - 'a';
+		  }
+		  private  TrieNode getNode(Character c){
+			  return children[getCharIndex(c)];
+		  }
+		  private void setNode(Character c , TrieNode node){
+			  children[getCharIndex(c)] = node;
+		  }
+		  public void add(String word){
+			  add(word, 0);
+			
+		  }
+		  private void add(String word , int index){
+			  size++;
+			  if(index == word.length()){
+				  return;
+			  }
+			  Character c = word.charAt(index);
+			  TrieNode child = getNode(c);
+			  if(child == null){
+				  child = new TrieNode();
+				  setNode(c, child);
+			  }
+			  child.add(word, index+1);
+		  }
+		  public int find(String word){
+			  return find(word, 0);
+		  }
+		  public int find(String word , int index){
+			  if(word.length() == index){
+				  return size;
+			  }
+			  TrieNode child = getNode(word.charAt(index));
+			  if(child == null){
+				  return 0;
+			  }
+			  return child.find(word, index+1);
+		  }
+	}
+	boolean hasCycle(Node head) {
+		// O(n) space & time complexity. if want in O(1) space then fast slow or turtle hare algorithm works pretty well.
+		if (head == null) {
+			return false;
+		}
+		HashSet<Node> set = new HashSet<>();
+		while (head.next != null) {
+			if (set.contains(head.next)) {
+				return true;
+			}
+			set.add(head.next);
+			head = head.next;
+		}
+		return false;
+	}
+	class Node {
+		Node next;
+		int data;
 	}
 }
