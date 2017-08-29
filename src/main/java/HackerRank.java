@@ -2,6 +2,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -304,7 +305,6 @@ public class HackerRank {
 		System.out.println(big1.multiply(big2));
 		scan.close();
 	}
-
 
 	public static void bigDecimalStringSorting() {
 		// Input
@@ -1195,13 +1195,20 @@ public class HackerRank {
 	}
 
 	public static void main(String[] args) {
+		PriorityQueue<Integer> pq = new PriorityQueue<>();
+		pq.add(2);
+		pq.add(1);
+		pq.add(3);
+		pq.add(5);
+		pq.add(4);
+		System.out.println(pq);
 		
-		tries();
 	}
-	
-	public static void tries(){
-		//excellent way of adding nodes and searchign a word frequency from the tree
-		//time complexit O(n) requires O(n) space
+
+	public static void tries() {
+		// excellent way of adding nodes and searchign a word frequency from the
+		// tree
+		// time complexit O(n) requires O(n) space
 		TrieNode node = new TrieNode();
 		node.add("hackerhackerhacker");
 		node.add("hackerrank");
@@ -1416,10 +1423,10 @@ public class HackerRank {
 			c2[off]++;
 		}
 		for (int i = 0; i < c2.length; i++) {
-			if(c2[i] != c1[i]  ){
+			if (c2[i] != c1[i]) {
 				int abs = Math.abs(c2[i] - c1[i]);
 				int j = 0;
-				while(abs > 0 && j < abs ){
+				while (abs > 0 && j < abs) {
 					count++;
 					j++;
 				}
@@ -1429,53 +1436,63 @@ public class HackerRank {
 		System.out.println(Arrays.toString(c2));
 		return count;
 	}
+
 	static class TrieNode {
-		
-		  private static final int Num_Chars = 26;
-		  TrieNode[] children = new TrieNode[Num_Chars];
-		  int size = 0;
-		  private static int getCharIndex(Character c){
-			  return c - 'a';
-		  }
-		  private  TrieNode getNode(Character c){
-			  return children[getCharIndex(c)];
-		  }
-		  private void setNode(Character c , TrieNode node){
-			  children[getCharIndex(c)] = node;
-		  }
-		  public void add(String word){
-			  add(word, 0);
-			
-		  }
-		  private void add(String word , int index){
-			  size++;
-			  if(index == word.length()){
-				  return;
-			  }
-			  Character c = word.charAt(index);
-			  TrieNode child = getNode(c);
-			  if(child == null){
-				  child = new TrieNode();
-				  setNode(c, child);
-			  }
-			  child.add(word, index+1);
-		  }
-		  public int find(String word){
-			  return find(word, 0);
-		  }
-		  public int find(String word , int index){
-			  if(word.length() == index){
-				  return size;
-			  }
-			  TrieNode child = getNode(word.charAt(index));
-			  if(child == null){
-				  return 0;
-			  }
-			  return child.find(word, index+1);
-		  }
+
+		private static final int Num_Chars = 26;
+		TrieNode[] children = new TrieNode[Num_Chars];
+		int size = 0;
+
+		private static int getCharIndex(Character c) {
+			return c - 'a';
+		}
+
+		private TrieNode getNode(Character c) {
+			return children[getCharIndex(c)];
+		}
+
+		private void setNode(Character c, TrieNode node) {
+			children[getCharIndex(c)] = node;
+		}
+
+		public void add(String word) {
+			add(word, 0);
+
+		}
+
+		private void add(String word, int index) {
+			size++;
+			if (index == word.length()) {
+				return;
+			}
+			Character c = word.charAt(index);
+			TrieNode child = getNode(c);
+			if (child == null) {
+				child = new TrieNode();
+				setNode(c, child);
+			}
+			child.add(word, index + 1);
+		}
+
+		public int find(String word) {
+			return find(word, 0);
+		}
+
+		public int find(String word, int index) {
+			if (word.length() == index) {
+				return size;
+			}
+			TrieNode child = getNode(word.charAt(index));
+			if (child == null) {
+				return 0;
+			}
+			return child.find(word, index + 1);
+		}
 	}
+
 	boolean hasCycle(Node head) {
-		// O(n) space & time complexity. if want in O(1) space then fast slow or turtle hare algorithm works pretty well.
+		// O(n) space & time complexity. if want in O(1) space then fast slow or
+		// turtle hare algorithm works pretty well.
 		if (head == null) {
 			return false;
 		}
@@ -1489,8 +1506,75 @@ public class HackerRank {
 		}
 		return false;
 	}
+
 	class Node {
 		Node next;
 		int data;
+	}
+
+	static String median(int[] arr) {
+		
+		//adding element , sort the elements and print the median
+		//{1} -- 1 , {1,2} --> 1.5 , {1,2,3} --> 2
+		//problems with the fix size of the array with the default value 0
+		
+		int len = arr.length;
+		double d = 0;
+		if (len == 1) {
+			d = (double) arr[0];
+			return new DecimalFormat("#.#").format(d);
+		}
+
+		if (len % 2 != 0) {
+			d = (double) arr[(len + 1) / 2 - 1];
+			;
+		} else {
+			d = (double) (arr[len / 2 - 1] + arr[len / 2]) / 2;
+		}
+		return new DecimalFormat("#.#").format(d);
+	}
+	static class MyQueue<T> {
+        Stack<T> stackNewestOnTop = new Stack<T>();
+        Stack<T> stackOldestOnTop = new Stack<T>();
+
+        public void enqueue(T value) { // Push onto newest stack
+        	stackNewestOnTop.push(value); //newest will be one top of this stackNewestOnTop
+        }
+
+        public T peek() {
+        	shiftStack();
+        	return stackOldestOnTop.peek();
+        }
+
+        public T dequeue() {
+        	shiftStack();
+            return stackOldestOnTop.pop();
+        }
+        private void shiftStack(){
+        	while(stackOldestOnTop.isEmpty()){
+        		while(!stackNewestOnTop.isEmpty()){
+        			stackOldestOnTop.push(stackNewestOnTop.pop());
+        		}
+        	}
+        }
+    }
+	public static void queueUsingStack(){
+		
+		MyQueue<Integer> queue = new MyQueue<Integer>();
+        
+        Scanner scan = new Scanner(System.in);
+        int n = scan.nextInt();
+        
+        for (int i = 0; i < n; i++) {
+            int operation = scan.nextInt();
+            if (operation == 1) { // enqueue
+                queue.enqueue(scan.nextInt());
+            } else if (operation == 2) { // dequeue
+                queue.dequeue();
+            } else if (operation == 3) { // print/peek
+                System.out.println(queue.peek());
+            }
+        }
+        scan.close();
 	}
 }
