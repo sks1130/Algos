@@ -1195,14 +1195,48 @@ public class HackerRank {
 	}
 
 	public static void main(String[] args) {
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
-		pq.add(2);
-		pq.add(1);
-		pq.add(3);
-		pq.add(5);
-		pq.add(4);
-		System.out.println(pq);
-		
+		int[] a = {2};
+		BinaryNode node = new BinaryNode(2);
+		method(a);
+		System.out.println(Arrays.toString(a));
+	}
+	
+	public static void method(int[] node){
+		node[0] = 3;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void printIndiaMap() {
+		//prints the map of India
+		int a = 10, b = 0, c = 10;
+		String s1 = "TFy!QJu ROo TNn(ROo)SLq SLq ULo+UHs UJq TNn*RPn/QPbEWS_JSWQAIJO^NBELPeHBFHT}TnALVlBLOFAkHFOuFETpHCStHAUFAgcEAelclcn^r^r\\tZvYxXyT|S~Pn SPm SOn TNn ULo0ULo#ULo-WHq!WFs XDt!";
+		a = s1.charAt(b);
+		while (a != 0) {
+			if (b < 170) {
+				a = s1.charAt(b);
+				b++;
+				while (a > 64) {
+					a--;
+					if (++c == 'Z') {
+						c /= 9;
+						System.out.print((char) (c));
+					} else
+						System.out.print((char) (33 ^ (b & 0x01)));
+				}
+			} else
+				break;
+		}
+
 	}
 
 	public static void tries() {
@@ -1512,26 +1546,75 @@ public class HackerRank {
 		int data;
 	}
 
-	static String median(int[] arr) {
+	static String median(List<Integer> list) {
+		//this is work but time complexity
+		
 		
 		//adding element , sort the elements and print the median
 		//{1} -- 1 , {1,2} --> 1.5 , {1,2,3} --> 2
 		//problems with the fix size of the array with the default value 0
-		
-		int len = arr.length;
+		if(list == null || list.isEmpty()){
+			return "";
+		}
+		Collections.sort(list);
+		int len = list.size();
+		int index = 0;
 		double d = 0;
 		if (len == 1) {
-			d = (double) arr[0];
-			return new DecimalFormat("#.#").format(d);
+			d = Double.valueOf(list.get(index));
+			return d+"";
 		}
-
 		if (len % 2 != 0) {
-			d = (double) arr[(len + 1) / 2 - 1];
-			;
+			 index = (len + 1) / 2 - 1;
+			d = (double) list.get(index);
 		} else {
-			d = (double) (arr[len / 2 - 1] + arr[len / 2]) / 2;
+			index = len / 2 - 1;
+			d =  (Double.valueOf(list.get(index)) + Double.valueOf(list.get(index+1))) / 2;
 		}
-		return new DecimalFormat("#.#").format(d);
+		return new DecimalFormat("0.0").format(d);
+	}
+
+	static double[] median(int[] arr) {
+		PriorityQueue<Integer> maxHeap = new PriorityQueue<>(new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o2.compareTo(o1);
+			}
+		});
+		PriorityQueue<Integer> minHeap = new PriorityQueue<>(); // top would be
+																// min
+		// 1 4 5 6 2
+		double[] medians = new double[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			int num = arr[i];
+			addNumber(num, minHeap,maxHeap);
+			rebalance( minHeap,maxHeap);
+			medians[i] = getMedian( minHeap,maxHeap);
+		}
+		return medians;
+	}
+	private static void addNumber(Integer num , PriorityQueue<Integer> maxHeap , PriorityQueue<Integer> minHeap){
+		if(minHeap.size() == 0 || num < minHeap.peek()){
+			minHeap.add(num);
+		} else {
+			maxHeap.add(num);
+		}
+	}
+	private static void rebalance(PriorityQueue<Integer> maxHeap , PriorityQueue<Integer> minHeap){
+		PriorityQueue<Integer> biggerHeap = (maxHeap.size() > minHeap.size() ) ? maxHeap : minHeap;
+		PriorityQueue<Integer> smallerHeap = (maxHeap.size() > minHeap.size() ) ? minHeap : maxHeap;
+		if(biggerHeap.size() - smallerHeap.size() >= 2 ){
+			smallerHeap.add(biggerHeap.poll());
+		}
+	}
+	private static double getMedian(PriorityQueue<Integer> maxHeap , PriorityQueue<Integer> minHeap){
+		PriorityQueue<Integer> biggerHeap = (maxHeap.size() > minHeap.size() ) ? maxHeap : minHeap;
+		PriorityQueue<Integer> smallerHeap = (maxHeap.size() > minHeap.size() ) ? minHeap : maxHeap;
+		if(biggerHeap.size() == smallerHeap.size()){
+			return ((double)(biggerHeap.peek()+smallerHeap.peek()))/2;
+		} else {
+			return biggerHeap.peek();
+		}
 	}
 	static class MyQueue<T> {
         Stack<T> stackNewestOnTop = new Stack<T>();
@@ -1576,5 +1659,74 @@ public class HackerRank {
             }
         }
         scan.close();
+	}
+	public static int stairCase(int numberOfStairs){
+		//for height n total number of jumps
+		if(numberOfStairs < 0 ){
+			return 0;
+		}
+		if(numberOfStairs == 1 || numberOfStairs == 0){
+			return 1;
+		}
+		if(numberOfStairs == 2){
+			return 2;
+		}
+		int[] memo = new int[numberOfStairs+1];
+		return 	stairCase(numberOfStairs - 1, memo) + stairCase(numberOfStairs - 2,memo) + stairCase(numberOfStairs -3,memo);
+	
+	}
+	public static int stairCase(int numberOfStairs, int[] memo){
+		//using memonization technique
+		if(numberOfStairs < 0){
+			return 0;
+		} else if(numberOfStairs == 0){
+			return 1;
+		}
+		if(memo[numberOfStairs] == 0){
+			memo[numberOfStairs]  = stairCase(numberOfStairs-1, memo) + stairCase(numberOfStairs-2, memo) + stairCase(numberOfStairs-3, memo);
+		}
+		return memo[numberOfStairs];
+	}
+
+	public static int countStairs(int steps) {
+		// Using DP
+		if (steps < 0) {
+			return 0;
+		} else if (steps <= 1) {
+			return 1;
+		}
+		int[] paths = { 1, 1, 2 };
+		for (int i = 3; i <= steps; i++) {
+			int count = paths[0] + paths[1] + paths[2];
+			paths[0] = paths[1];
+			paths[1] = paths[2];
+			paths[2] = count;
+		}
+		return paths[2];
+	}
+
+	public static long countChanges(int money , int[] coins){
+		return countChanges(money, coins, 0, new HashMap<String, Long>());
+	}
+	public static long countChanges(int money , int[] coins , int index , HashMap<String, Long> memo){
+		if(index>= coins.length){
+			return 0;
+		}
+		if(money == 0){
+			return 1;
+		}
+		long ways = 0;
+		int amountWithCoins = 0;
+		String key = money + "-" + index;
+		if(memo.containsKey(key)){
+			return memo.get(key);
+		}
+		while(amountWithCoins<=money){
+			int rem = money  - amountWithCoins;
+			ways+=countChanges(rem, coins, index+1, memo);
+			amountWithCoins+=coins[index];
+		}
+		memo.put(key, ways);
+		return ways;
 	}
 }
