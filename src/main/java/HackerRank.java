@@ -1195,12 +1195,51 @@ public class HackerRank {
 	}
 
 	public static void main(String[] args) {
-		int[] a = {2};
-		BinaryNode node = new BinaryNode(2);
-		method(a);
-		System.out.println(Arrays.toString(a));
+		int[] arr = {2, 1, 3, 1 ,2};
+		System.out.println(countInversions(arr));
 	}
 	
+	class MinHeap{
+		Node[] nodes;
+		Node left;
+		Node right;
+		Node root;
+		
+	}
+
+	public static void showFlavours(int money, int[] arr) {
+		// O(n2) is most possible solution and no extra space
+		int len = arr.length;
+		for (int i = 0; i < len; i++) {
+			for (int j = i + 1; j < len; j++) {
+				if (arr[i] + arr[j] == money) {
+					System.out.println((i + 1) + " " + (j + 1));
+					return;
+				}
+			}
+		}
+
+	}
+
+	public static void showFlavoursOptimised(int money, int[] arr) {
+		// O(n) time complexity
+		// O(n) space complexity
+		// optimised way to search the sum of two values
+		Map<Integer, Integer> map = new HashMap<>();
+		int len = arr.length;
+		for (int i = 0; i < len; i++) {
+			int cost = arr[i];
+			int id = i + 1;
+			int key = money - cost;
+			if (map.containsKey(key)) {
+				System.out.println(map.get(key) + " " + id);
+				break;
+
+			}
+			map.putIfAbsent(cost, id);
+		}
+
+	}
 	public static void method(int[] node){
 		node[0] = 3;
 	}
@@ -1542,8 +1581,24 @@ public class HackerRank {
 	}
 
 	class Node {
+		Node[] nodes;
 		Node next;
+		Node root = this;
+		Node left;
+		Node right;
 		int data;
+		long swap = 0;
+		public Node(int data){
+			this.data = data;
+		}
+		public Node(int[] arr) {
+			nodes = new Node[arr.length];
+			for(int i =0 ; i< arr.length ; i++){
+				nodes[i] = new Node(arr[i]);
+			}
+		}
+		void heapify(){
+		}
 	}
 
 	static String median(List<Integer> list) {
@@ -1729,4 +1784,24 @@ public class HackerRank {
 		memo.put(key, ways);
 		return ways;
 	}
+	 static long countInversions(int[] arr) {
+		 long count = 0;
+		 
+		 
+		 	//solution# 1
+	        // Complete this function but O(n2) is worst case
+//	        int n = arr.length;
+//	        for(int i=0 ; i< n;i++){
+//	            for(int j=i+1 ; j< n ; j++){
+//	                if(arr[i] > arr[j]){
+//	                    swap(arr, i , j);
+//	                    count++;
+//	                }
+//	            }
+//	        }
+		//solution# 2
+	   // Complete this function but O(nlogn) & O(n) extra space in worst and best case
+	        
+	        return count;
+	    }
 }

@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * 
@@ -17,18 +19,11 @@ import java.util.Map;
 public class SortingAlgos {
 
 	public static void main(String[] args) {
-		Graph g = new Graph();
-	    g.addEdge(0, 1);
-	    g.addEdge(0, 2);
-	    g.addEdge(1, 2);
-	    g.addEdge(2, 0);
-	    g.addEdge(2, 3);
-	    g.addEdge(3, 3);
-	    System.out.println(lonelyInteger(new int[]{4,2,2,3,3,6}));
-	    
-	 
+		int[] arr = { 2, 1, 3, 1, 2 };
+		MergeSort m = new MergeSort();
+		System.out.println(m.mergeSort(arr));
+
 	}
-	
 	public static int lonelyInteger(int[] arr){
 		int result = 0;
 		for (int i : arr) {
@@ -264,5 +259,42 @@ public class SortingAlgos {
 		}
 	}
 	
-
+	private static class MergeSort{
+		private long swaps = 0;
+		public long mergeSort(int[] arr){
+			mergeSort(arr, new int[arr.length], 0, arr.length -1);
+			return swaps;
+		}
+		private void mergeSort(int[] arr, int[] helper , int start , int end){
+			if(start>= end){
+				return;
+			}
+			int mid = (start+end)/2;
+			mergeSort(arr, helper, start, mid);
+			mergeSort(arr, helper, mid+1, end);
+			merge(arr, helper, start, mid, end);
+		}
+		private void merge(int[] arr , int[] helper , int start , int mid , int end){
+			if(start>=end){
+				return;
+			}
+			for(int i = start; i<=end ; i++){
+				helper[i] = arr[i];
+			}
+			int index = start;
+			int left = start;
+			int right = mid+1;
+			while(left<= mid && right <= end){
+				if(helper[left]<=helper[right]){
+					arr[index++] = helper[left++];
+				} else {
+					swaps+= mid+1 - left;
+					arr[index++] = helper[right++];
+				}
+			}
+			while(left<=mid){
+				arr[index++] = helper[left++];
+			}
+		}
+	}
 }
